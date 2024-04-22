@@ -1,0 +1,8 @@
+# Sensor Read Custom Service. 
+
+# Request params: Number of samples. An int between [1, 8].
+int8 num_samples
+---
+# Response params: Array of 6-DOF readings, of size num_samples.
+SensorSample[<=8] readings
+# int64 readings
