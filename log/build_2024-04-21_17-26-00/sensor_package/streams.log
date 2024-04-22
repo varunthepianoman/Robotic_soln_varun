@@ -1,0 +1,38 @@
+[1.889s] Invoking command in '/home/varun/Robotic_soln_varun/src/sensor_package': PYTHONPATH=/home/varun/Robotic_soln_varun/build/sensor_package/prefix_override:/home/varun/Robotic_soln_varun/install/sensor_package/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/sensor_package build --build-base /home/varun/Robotic_soln_varun/build/sensor_package/build install --record /home/varun/Robotic_soln_varun/build/sensor_package/install.log --single-version-externally-managed install_data
+[2.408s] running egg_info
+[2.409s] creating ../../build/sensor_package/sensor_package.egg-info
+[2.409s] writing ../../build/sensor_package/sensor_package.egg-info/PKG-INFO
+[2.410s] writing dependency_links to ../../build/sensor_package/sensor_package.egg-info/dependency_links.txt
+[2.410s] writing entry points to ../../build/sensor_package/sensor_package.egg-info/entry_points.txt
+[2.410s] writing requirements to ../../build/sensor_package/sensor_package.egg-info/requires.txt
+[2.410s] writing top-level names to ../../build/sensor_package/sensor_package.egg-info/top_level.txt
+[2.410s] writing manifest file '../../build/sensor_package/sensor_package.egg-info/SOURCES.txt'
+[2.413s] reading manifest file '../../build/sensor_package/sensor_package.egg-info/SOURCES.txt'
+[2.413s] adding license file 'LICENSE'
+[2.414s] writing manifest file '../../build/sensor_package/sensor_package.egg-info/SOURCES.txt'
+[2.414s] running build
+[2.415s] running build_py
+[2.415s] creating /home/varun/Robotic_soln_varun/build/sensor_package/build
+[2.415s] creating /home/varun/Robotic_soln_varun/build/sensor_package/build/lib
+[2.415s] creating /home/varun/Robotic_soln_varun/build/sensor_package/build/lib/sensor_package
+[2.415s] copying sensor_package/my_node.py -> /home/varun/Robotic_soln_varun/build/sensor_package/build/lib/sensor_package
+[2.416s] copying sensor_package/__init__.py -> /home/varun/Robotic_soln_varun/build/sensor_package/build/lib/sensor_package
+[2.416s] running install
+[2.419s] running install_lib
+[2.419s] creating /home/varun/Robotic_soln_varun/install/sensor_package/lib/python3.10/site-packages/sensor_package
+[2.426s] copying /home/varun/Robotic_soln_varun/build/sensor_package/build/lib/sensor_package/my_node.py -> /home/varun/Robotic_soln_varun/install/sensor_package/lib/python3.10/site-packages/sensor_package
+[2.426s] copying /home/varun/Robotic_soln_varun/build/sensor_package/build/lib/sensor_package/__init__.py -> /home/varun/Robotic_soln_varun/install/sensor_package/lib/python3.10/site-packages/sensor_package
+[2.427s] byte-compiling /home/varun/Robotic_soln_varun/install/sensor_package/lib/python3.10/site-packages/sensor_package/my_node.py to my_node.cpython-310.pyc
+[2.428s] byte-compiling /home/varun/Robotic_soln_varun/install/sensor_package/lib/python3.10/site-packages/sensor_package/__init__.py to __init__.cpython-310.pyc
+[2.430s] running install_data
+[2.430s] creating /home/varun/Robotic_soln_varun/install/sensor_package/share/ament_index
+[2.431s] creating /home/varun/Robotic_soln_varun/install/sensor_package/share/ament_index/resource_index
+[2.431s] creating /home/varun/Robotic_soln_varun/install/sensor_package/share/ament_index/resource_index/packages
+[2.431s] copying resource/sensor_package -> /home/varun/Robotic_soln_varun/install/sensor_package/share/ament_index/resource_index/packages
+[2.431s] copying package.xml -> /home/varun/Robotic_soln_varun/install/sensor_package/share/sensor_package
+[2.431s] running install_egg_info
+[2.434s] Copying ../../build/sensor_package/sensor_package.egg-info to /home/varun/Robotic_soln_varun/install/sensor_package/lib/python3.10/site-packages/sensor_package-0.0.0-py3.10.egg-info
+[2.436s] running install_scripts
+[2.472s] Installing my_node script to /home/varun/Robotic_soln_varun/install/sensor_package/lib/sensor_package
+[2.474s] writing list of installed files to '/home/varun/Robotic_soln_varun/build/sensor_package/install.log'
+[2.511s] Invoked command in '/home/varun/Robotic_soln_varun/src/sensor_package' returned '0': PYTHONPATH=/home/varun/Robotic_soln_varun/build/sensor_package/prefix_override:/home/varun/Robotic_soln_varun/install/sensor_package/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/sensor_package build --build-base /home/varun/Robotic_soln_varun/build/sensor_package/build install --record /home/varun/Robotic_soln_varun/build/sensor_package/install.log --single-version-externally-managed install_data
