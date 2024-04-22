@@ -29,7 +29,7 @@ class Sensor(Thread):
         
         # Bind the server arg to the socket
         self.sock.bind(self.server_address)
-        
+        print(self.server_address)
         # Listen for incoming connections
         self.sock.listen(1)
 
@@ -88,6 +88,8 @@ class Sensor(Thread):
                         # Recive the request for the number of samples
                         sample_length = self.recive(500)
 
+                        print('sample_length', sample_length)
+
                         # Let's pretend we are really collecting samples
                         time.sleep(int(sample_length)/self.sampling_rate + self.overhead_delay + random.randint(0, 100)/100000)
                         
@@ -101,7 +103,7 @@ class Sensor(Thread):
 
 def main(args=None):
     
-    sensor1 = Sensor('127.0.0.3', 10000, 2000, 0.001) # Define a sensor with 2000Hz sampling rate and 1ms delay
+    sensor1 = Sensor('127.0.0.1', 65432, 2000, 0.001) # Define a sensor with 2000Hz sampling rate and 1ms delay
     t1 = Thread(target = sensor1.run)
     t1.daemon = True
 

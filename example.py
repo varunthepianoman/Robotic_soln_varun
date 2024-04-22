@@ -14,7 +14,7 @@ number_of_samples = 10
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Connect the socket to the port where the server is listening
-server_address = ('127.0.0.3', 10000)
+server_address = ('127.0.0.1', 65432)
 print('connecting to {} port {}'.format(*server_address))
 sock.connect(server_address)
 
@@ -25,7 +25,8 @@ while True:
     sock.sendall(message)
 
     byte_data = sock.recv(10000)
-    data =  np.frombuffer(byte_data)
+    data = np.frombuffer(byte_data)
+    print('data', data)
 # Clean up the connection
 print('closing socket')
 sock.close()
