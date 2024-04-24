@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'my_node = sensor_package.my_node:main'
+            'my_node = sensor_package.my_node:main',
             'service = sensor_package.sensor_service:main',
             'client = sensor_package.sensor_client:main',
 
