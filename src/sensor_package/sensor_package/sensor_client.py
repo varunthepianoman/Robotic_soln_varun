@@ -1,6 +1,6 @@
 import sys
 
-from tutorial_interfaces.srv import SensorRead 
+from custom_interfaces.srv import SensorRead 
 import rclpy
 from rclpy.node import Node
 

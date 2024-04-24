@@ -1,0 +1,22 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from custom_interfaces/srv/SensorRead.srv
+// generated code does not contain a copyright notice
+
+#include "custom_interfaces/msg/SensorSample.idl"
+
+module custom_interfaces {
+  module srv {
+    @verbatim (language="comment", text=
+      "Sensor Read Custom Service. ")
+    struct SensorRead_Request {
+      @verbatim (language="comment", text=
+        "Request params: Number of samples. An int between [1, 8].")
+      int8 num_samples;
+    };
+    @verbatim (language="comment", text=
+      "Response params: Array of 6-DOF readings, of size num_samples.")
+    struct SensorRead_Response {
+      sequence<custom_interfaces::msg::SensorSample, 8> readings;
+    };
+  };
+};

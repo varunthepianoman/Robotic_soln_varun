@@ -1,5 +1,5 @@
-from srv import SensorRead
-from msg import SensorSample
+from custom_interfaces.srv import SensorRead
+from custom_interfaces.msg import SensorSample
 
 import rclpy
 from rclpy.node import Node
