@@ -24,7 +24,7 @@ class SensorService(Node):
 def main():
     rclpy.init()
 
-    minimal_service = SensorService()
+    sensor_service = SensorService()
 
     rclpy.spin(sensor_service)
 
