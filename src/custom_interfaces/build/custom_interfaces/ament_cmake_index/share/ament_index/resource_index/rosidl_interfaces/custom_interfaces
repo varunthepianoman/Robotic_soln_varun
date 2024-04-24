@@ -1,6 +1,0 @@
-msg/SensorSample.idl
-msg/SensorSample.msg
-srv/SensorRead.idl
-srv/SensorRead.srv
-srv/SensorRead_Request.msg
-srv/SensorRead_Response.msg
