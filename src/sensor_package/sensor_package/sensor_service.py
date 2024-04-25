@@ -25,6 +25,7 @@ class SensorService(Node):
         t1 = Thread(target = self.sensor.run)
         t1.daemon = True
         t1.start()
+        self.data_reservoir = deque(maxlen=buffer_size) # Data reservoir is a reservoir of the last 200 samples.
 
         # Create a TCP/IP socket
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -47,7 +48,6 @@ class SensorService(Node):
         print('aftersock.recv')
         sensor_data = np.frombuffer(byte_data).reshape(self.sensor.DOF, request.num_samples)
         print('sensor_data', sensor_data)
-        self.data_reservoir = deque(maxlen=buffer_size) # Data reservoir is a reservoir of the last 200 samples.
 
     def sensor_read_callback(self, request, response):
         # Request num_samples samples from the sensor
@@ -90,7 +90,7 @@ def main():
             sensor_service.data_reservoir.append(datapoint) # List appending takes about same time as editing preallocated numpy array: Append to list for simplicity
 
 
-rclpy.shutdown()
+    rclpy.shutdown()
 
 
 if __name__ == '__main__':
