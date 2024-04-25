@@ -25,6 +25,7 @@ class SensorService(Node):
         t1 = Thread(target = self.sensor.run)
         t1.daemon = True
         t1.start()
+
         self.data_reservoir = deque(maxlen=buffer_size) # Data reservoir is a reservoir of the last 200 samples.
 
         # Create a TCP/IP socket
@@ -36,23 +37,14 @@ class SensorService(Node):
         self.sock.connect(server_address)
         print('connected')
 
-    def sensor_read_callback(self, request, response):
-        # Request num_samples samples from the sensor
-        print('callback from sensor')
-        message_string = str(request.num_samples)
-        message = message_string.encode()
-        print('beforesendall')
-        self.sock.sendall(message)
-        print('aftersendall')
-        byte_data = self.sock.recv(10000)
-        print('aftersock.recv')
-        sensor_data = np.frombuffer(byte_data).reshape(self.sensor.DOF, request.num_samples)
-        print('sensor_data', sensor_data)
+        t2 = Thread(target=self.query_for_samples)
+        t2.daemon = True
+        t2.start()
 
     def sensor_read_callback(self, request, response):
         # Request num_samples samples from the sensor
         # TODO: Wait if there are not enough samples left!
-
+        # time.sleep(5)
         Sensor_Samples = []
         for i in range(request.num_samples):
             datapoint = SensorSample()
@@ -61,34 +53,29 @@ class SensorService(Node):
         response.readings = Sensor_Samples
         return response
 
+    def query_for_samples(self):
+        sensor_dof = self.sensor.DOF # For fast access
+        while True:
+            print('in forever loop')
+            print('data_reservoir', self.data_reservoir)
+            message_string = str(number_of_samples)
+            message = message_string.encode()
+            self.sock.sendall(message)
+
+            byte_data = self.sock.recv(10000)
+            sensor_data = np.frombuffer(byte_data)
+            sensor_data = sensor_data.reshape(number_of_samples, sensor_dof)
+            for datapoint in sensor_data:
+                self.data_reservoir.append(datapoint) # List appending takes about same time as editing preallocated numpy array: Append to list for simplicity
+
+
+
 def main():
     rclpy.init()
 
     sensor_service = SensorService()
 
     rclpy.spin(sensor_service)
-
-    sensor_dof = sensor_service.sensor.DOF # For fast access
-
-    # Create a TCP/IP socket
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    # Connect the socket to the port where the server is listening
-    server_address = ('127.0.0.1', 65432)
-    print('connecting to {} port {}'.format(*server_address))
-    sock.connect(server_address)
-
-    while True:
-        message_string = str(number_of_samples)
-        message = message_string.encode()
-        sock.sendall(message)
-
-        byte_data = sock.recv(10000)
-        sensor_data = np.frombuffer(byte_data)
-        sensor_data.reshape(sensor_dof, number_of_samples)
-        for datapoint in sensor_data:
-            sensor_service.data_reservoir.append(datapoint) # List appending takes about same time as editing preallocated numpy array: Append to list for simplicity
-
 
     rclpy.shutdown()
 
