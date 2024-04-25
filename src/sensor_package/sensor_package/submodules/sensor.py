@@ -88,7 +88,6 @@ class Sensor(Thread):
                         # Recive the request for the number of samples
                         sample_length = self.recive(500)
 
-                        print('sample_length', sample_length)
 
                         # Let's pretend we are really collecting samples
                         time.sleep(int(sample_length)/self.sampling_rate + self.overhead_delay + random.randint(0, 100)/100000)

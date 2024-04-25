@@ -56,8 +56,6 @@ class SensorService(Node):
     def query_for_samples(self):
         sensor_dof = self.sensor.DOF # For fast access
         while True:
-            print('in forever loop')
-            print('data_reservoir', self.data_reservoir)
             message_string = str(number_of_samples)
             message = message_string.encode()
             self.sock.sendall(message)
