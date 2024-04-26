@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>sensor_package_cpp</name>
+  <version>0.0.0</version>
+  <description>This is the final version of my sensor network, which is a combination of C++ and Python. It is an ament_cmake type package of the Sensor server-client service for an automated sensor. Part of an application for a Robotics Software Engineer position at Machina Labs.</description>
+  <maintainer email="varunkamat99@gmail.com">varun</maintainer>
+  <license>Creative Commons non-commercial</license>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>rclpy</depend>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>example_interfaces</depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

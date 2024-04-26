@@ -3,9 +3,9 @@
 <package format="3">
   <name>sensor_package</name>
   <version>0.0.0</version>
-  <description>Sensor server-client service for an automated sensor. Part of an application for a Robotics Software Engineer position at Machina Labs.</description>
+  <description>This is a python-only ament_python type package that is a prototype of the Sensor server-client service for an automated sensor. Part of an application for a Robotics Software Engineer position at Machina Labs.</description>
   <maintainer email="varunkamat99@gmail.com">varun</maintainer>
-  <license>Apache-2.0</license>
+  <license>Creative Commons non-commercial</license>
   
   <depend>rclpy</depend>
   <depend>example_interfaces</depend>
