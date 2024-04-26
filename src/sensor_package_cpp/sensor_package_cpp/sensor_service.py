@@ -7,7 +7,7 @@ from collections import deque
 import rclpy
 from rclpy.node import Node
 import numpy as np
-from .submodules.sensor import Sensor
+from sensor_package_cpp.submodules.sensor import Sensor
 import socket
 import sys
 import time
@@ -16,7 +16,7 @@ from threading import Thread, Timer
 # requesting 10 samples on each call
 number_of_samples = 10
 
-buffer_size = 200 # How many sensor samples to store in our buffer: 200 samples should be more than enough space for our purposes.
+buffer_size = 2000000 # How many sensor samples to store in our buffer: 200 samples should be more than enough space for our purposes.
 
 
 class SensorService(Node):
@@ -48,12 +48,16 @@ class SensorService(Node):
         # Request num_samples samples from the sensor
         # TODO: Wait if there are not enough samples left!
         # time.sleep(5)
+        print('entered sensor callback')
+        print('request.num_samples', request.num_samples)
+        print('len(data)', len(self.data_reservoir))
         Sensor_Samples = []
         for i in range(request.num_samples):
             datapoint = SensorSample()
             datapoint.data = self.data_reservoir.pop()
             Sensor_Samples.append(datapoint)
         response.readings = Sensor_Samples
+        print('response after generating', response.readings)
         return response
 
     def query_for_samples(self):

@@ -11,7 +11,7 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
-find_package(example_interfaces REQUIRED)
+find_package(custom_interfaces REQUIRED)
 # find dependencies
 # uncomment the following section in order to fill in
 # further dependencies manually.
@@ -21,7 +21,7 @@ find_package(example_interfaces REQUIRED)
 include_directories(include)
 # Create Cpp executable
 add_executable(client_executable src/sensor_client.cpp)
-ament_target_dependencies(client_executable rclcpp)
+ament_target_dependencies(client_executable rclcpp custom_interfaces)
 
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
