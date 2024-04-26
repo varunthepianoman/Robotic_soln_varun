@@ -22,11 +22,6 @@ include_directories(include)
 # Create Cpp executable
 add_executable(client_executable src/sensor_client.cpp)
 ament_target_dependencies(client_executable rclcpp)
-# Install Cpp executables
-install(TARGETS
-  client_executable
-  DESTINATION lib/${PROJECT_NAME}
-)
 
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
@@ -50,5 +45,11 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+# Install Cpp executables
+install(TARGETS
+  client_executable
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 ament_package()
