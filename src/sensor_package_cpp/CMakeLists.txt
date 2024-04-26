@@ -20,11 +20,11 @@ find_package(example_interfaces REQUIRED)
 # Include Cpp "include" directory
 include_directories(include)
 # Create Cpp executable
-add_executable(cpp_executable src/sensor_client.cpp)
-ament_target_dependencies(cpp_executable rclcpp)
+add_executable(client_executable src/sensor_client.cpp)
+ament_target_dependencies(client_executable rclcpp)
 # Install Cpp executables
 install(TARGETS
-  cpp_executable
+  client_executable
   DESTINATION lib/${PROJECT_NAME}
 )
 
