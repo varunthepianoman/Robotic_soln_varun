@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 from custom_interfaces.srv import SensorRead
 from custom_interfaces.msg import SensorSample
 from collections import deque
@@ -52,11 +51,18 @@ class SensorService(Node):
         print('request.num_samples', request.num_samples)
         print('len(data)', len(self.data_reservoir))
         Sensor_Samples = []
+        zero_data = True # A variable that tracks special case when we have no data
         for i in range(request.num_samples):
             datapoint = SensorSample()
-            datapoint.data = self.data_reservoir.pop()
+            # Try to pop() from self.data_reservoir: IndexError means no more data in buffer and we construct our SampleSet and return.
+            try:
+                datapoint.data = self.data_reservoir.pop()
+            except IndexError:
+                    continue
+            zero_data = False
             Sensor_Samples.append(datapoint)
         response.readings = Sensor_Samples
+        response.zero_data = zero_data
         print('response after generating', response.readings)
         return response
 
