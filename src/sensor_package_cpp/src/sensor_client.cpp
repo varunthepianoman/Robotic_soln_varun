@@ -29,7 +29,8 @@ public:
 
     auto send_request()
     {
-        rclcpp::Client::SharedRequest request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
+        rclcpp::Client::SharedRequest request;
+        request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
         request->num_samples = this->num_samples;
 
         while (!sensor_client->wait_for_service(1s)) {
