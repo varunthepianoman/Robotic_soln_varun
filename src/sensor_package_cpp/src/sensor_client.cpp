@@ -51,7 +51,7 @@ public:
             RCLCPP_INFO(this->get_logger(), "Received response");
         }
 
-        auto readings = result_future.readings
+        auto readings = result_future.readings;
         // Make static to preserve this returned variable
         static rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_future_get = result_future.get();
 
