@@ -1,6 +1,5 @@
 #include "rclcpp/rclcpp.hpp"
 #include "custom_interfaces/srv/sensor_read.hpp"
-//#include "rclcpp/qos.hpp"
 
 #include <chrono>
 #include <cstdlib>
@@ -21,7 +20,6 @@ public:
             // The clients are called within the publisher, so they must be in different Callback Groups than Publisher to avoid deadlock.
             // Clients 1 and 2 can be called in parallel, so place them in different Callback Groups as well.
             // Favoring MutuallyExclusive over Reentrant as it is safer: We then won't have two queries accessing same server data_reservoir.
-//            qos_profile = rclcp
 
             rclcpp::CallbackGroup::SharedPtr callback_group = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
             rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr client = this->create_client<custom_interfaces::srv::SensorRead>("sensor1_read_service", rmw_qos_profile_system_default, callback_group);
@@ -30,7 +28,7 @@ public:
     auto send_request()
     {
         auto request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
-        request->num_samples = this->num_samples
+        request->num_samples = this->num_samples;
 
         while (!sensor_client->wait_for_service(1s)) {
             if (!rclcpp::ok()) {
@@ -42,7 +40,7 @@ public:
 
         auto result = sensor_client->async_send_request(request);
 
-        return result
+        return result;
 //        // Handled by my callback groups! Wait for the result.
 //        if (rclcpp::spin_until_future_complete(node, result) ==
 //            rclcpp::FutureReturnCode::SUCCESS) {
