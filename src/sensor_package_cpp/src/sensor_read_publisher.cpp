@@ -16,8 +16,8 @@ class SensorReadPublisher : public rclcpp::Node
 public:
     SensorReadPublisher(rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor1_client, rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor2_client, int sensor1_num_samples, int sensor2_num_samples)
             : Node("sensor_read_publisher")
-            , sensor_client_1 = sensor_client_1
-            , sensor_client_2 = sensor_client_2
+            , sensor1_client = sensor1_client
+            , sensor2_client = sensor2_client
             , publisher_ = this->create_publisher<custom_interfaces::msg::SensorReadCombined>("sensor_read_500hz", 10)
             , timer_ = this->create_wall_timer(2ms, std::bind(&SensorReadPublisher::timer_callback, this))
             , sensor1_num_samples = sensor1_num_samples
