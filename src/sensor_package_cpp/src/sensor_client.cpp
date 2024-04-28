@@ -28,7 +28,7 @@ public:
             rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr client = this->create_client<custom_interfaces::srv::SensorRead>("sensor1_read_service", rmw_qos_profile_system_default, callback_group);
         }
 
-    (rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse)* send_request()
+    rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse* send_request()
     {
         rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedRequest request;
         request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();

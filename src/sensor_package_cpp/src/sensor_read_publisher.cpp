@@ -16,12 +16,19 @@ class SensorReadPublisher : public rclcpp::Node
 private:
     void timer_callback()
     {
-        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse* result_sensor_1 = this->sensor1_client->send_request(this->sensor1_num_samples);
-        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse* result_sensor_2 = this->sensor2_client->send_request(this->sensor2_num_samples);
+        // Query both Clients for sensor data
+        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse* result_sensor_1 = this->sensor1_client->send_request();
+        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse* result_sensor_2 = this->sensor2_client->send_request();
+        
+        // Generate combined message
         custom_interfaces::msg::SensorReadCombined message = custom_interfaces::msg::SensorReadCombined();
-        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse deref_result1 = (*result_sensor_1)
+
+        // Put Sensor 1 and Sensor 2 data into combined message
+        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse deref_result1 = (*result_sensor_1);
         message.readings_sensor1 = deref_result1.readings;
         message.readings_sensor2 = (*result_sensor_2).readings;
+
+        // Publish combined message
         RCLCPP_INFO(this->get_logger(), "Publishing: '%s', and '%s'", message.readings_sensor1.std::string::c_str(), message.readings_sensor2.std::string::c_str());
         publisher_->publish(message);
     }
