@@ -52,7 +52,7 @@ public:
         }
 
         // Make static to preserve this returned variable NOTE deleting get
-        static rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_future_get = result_future;
+        static rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_future_get = result_future.get();
 
         return &result_future_get;
 //        // Handled by my callback groups! Wait for the result.
