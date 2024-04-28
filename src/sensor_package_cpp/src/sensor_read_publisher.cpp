@@ -14,22 +14,22 @@ using namespace std::chrono_literals;
 class SensorReadPublisher : public rclcpp::Node
 {
 public:
-    SensorReadPublisher(rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor_client_1, rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor_client_2, int sensor_1_num_samples, int sensor_2_num_samples)
+    SensorReadPublisher(rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor1_client, rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor2_client, int sensor1_num_samples, int sensor2_num_samples)
             : Node("sensor_read_publisher")
             , sensor_client_1 = sensor_client_1
             , sensor_client_2 = sensor_client_2
             , publisher_ = this->create_publisher<custom_interfaces::msg::SensorReadCombined>("sensor_read_500hz", 10)
             , timer_ = this->create_wall_timer(2ms, std::bind(&SensorReadPublisher::timer_callback, this))
-            , sensor_1_num_samples = sensor_1_num_samples
-            , sensor_2_num_samples = sensor_2_num_samples
+            , sensor1_num_samples = sensor1_num_samples
+            , sensor2_num_samples = sensor2_num_samples
     {
     }
 
 private:
     void timer_callback()
     {
-        result_sensor_1 = this->sensor_client_1.send_request(this->sensor_1_num_samples);
-        result_sensor_2 = this->sensor_client_2.send_request(this->sensor_2_num_samples);
+        result_sensor_1 = this->sensor1_client.send_request(this->sensor1_num_samples);
+        result_sensor_2 = this->sensor2_client.send_request(this->sensor2_num_samples);
         custom_interfaces::msg::SensorReadCombined message = custom_interfaces::msg::SensorReadCombined();
         message.readings_sensor1 = result_sensor_1;
         message.readings_sensor2 = result_sensor_2;
@@ -37,7 +37,11 @@ private:
         publisher_->publish(message);
     }
     rclcpp::TimerBase::SharedPtr timer_;
-    rclcpp::Publisher<custom_interfaces::msg::SensorReadCombined>::SharedPtr publisher_; // CHANGE TYPE
+    rclcpp::Publisher<custom_interfaces::msg::SensorReadCombined>::SharedPtr publisher_;
+    rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor1_client;
+    rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor2_client;
+    int sensor1_num_samples;
+    int sensor2_num_samples;
 };
 
 // THIS WILL GO AWAY
