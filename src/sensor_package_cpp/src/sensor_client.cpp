@@ -1,6 +1,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "custom_interfaces/srv/sensor_read.hpp"
 #include <rclcpp/client.hpp>
+#include <string>
 
 
 #include <chrono>
