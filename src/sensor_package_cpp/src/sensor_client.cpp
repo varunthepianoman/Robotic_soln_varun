@@ -19,7 +19,7 @@ public:
         this->sensor_client = sensor_client;
     }
 
-    void send_request(int num_samples):
+    void send_request(int num_samples)
     {
         auto request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
         request->num_samples = num_samples
