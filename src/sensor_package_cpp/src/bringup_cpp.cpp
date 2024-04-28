@@ -46,4 +46,6 @@ int main() {
 
     executor.spin();
 
+    return 0;
+
 }
