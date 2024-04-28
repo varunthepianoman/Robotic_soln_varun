@@ -43,7 +43,9 @@ public:
 
         rclcpp::Client<custom_interfaces::srv::SensorRead>::FutureAndRequestId result_future = sensor_client->async_send_request(request);
 
-        std::future_status status = result_future.wait_for(1s);  // timeout to guarantee a graceful finish
+        // Must wait for result as we have allowed Publisher and Client to run concurrently (in order to avoid deadlock). Timeout to guarantee a graceful finish
+        std::future_status status = result_future.wait_for(1s);
+
         if (status == std::future_status::ready) {
             RCLCPP_INFO(this->get_logger(), "Received response");
         }
