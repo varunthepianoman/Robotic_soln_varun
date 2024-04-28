@@ -19,15 +19,15 @@ private:
         rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_sensor_1 = this->sensor1_client->send_request(this->sensor1_num_samples);
         rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_sensor_2 = this->sensor2_client->send_request(this->sensor2_num_samples);
         custom_interfaces::msg::SensorReadCombined message = custom_interfaces::msg::SensorReadCombined();
-        message.readings_sensor1 = result_sensor_1;
-        message.readings_sensor2 = result_sensor_2;
-        RCLCPP_INFO(this->get_logger(), "Publishing: '%s', and '%s'", message.readings_sensor1.c_str(), message.readings_sensor2.c_str());
+        message.readings_sensor1 = result_sensor_1.readings;
+        message.readings_sensor2 = result_sensor_2.readings;
+        RCLCPP_INFO(this->get_logger(), "Publishing: '%s', and '%s'", message.readings_sensor1.std::string::c_str(), message.readings_sensor2.std::string::c_str());
         publisher_->publish(message);
     }
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Publisher<custom_interfaces::msg::SensorReadCombined>::SharedPtr publisher_;
-    SensorClient sensor1_client;
-    SensorClient sensor2_client;
+    SensorClient* sensor1_client;
+    SensorClient* sensor2_client;
     int sensor1_num_samples;
     int sensor2_num_samples;
 public:

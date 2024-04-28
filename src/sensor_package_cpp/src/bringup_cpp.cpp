@@ -27,7 +27,7 @@ int main() {
     rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor2_client =
             client2_node->create_client<custom_interfaces::srv::SensorRead>("sensor2_read_service", rclcpp::QoS(10), client2_callback_group));
 
-    // make publisher
+    // make publisher: Remember to put Pointers to clients
     publisher = std::make_shared<SensorReadPublisher>(sensor1_client, sensor2_client, CLIENT1_NUM_SAMPLES, CLIENT2_NUM_SAMPLES);
 
     // make subscriber
