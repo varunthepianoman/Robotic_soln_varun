@@ -20,7 +20,7 @@ public:
         this->sensor_client = sensor_client;
     }
 
-    custom_interfaces::srv::SensorRead::Response send_request(int num_samples):
+    &custom_interfaces::srv::SensorRead::Response send_request(int num_samples):
     {
         auto request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
         request->num_samples = num_samples
@@ -44,7 +44,7 @@ public:
 //            RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service sensor_read_service");
 //        }
     }
-}
+};
 //    std::cout << "type(result)" << typeid(result).name();
 //	std::cout << "\n\n\n";
 //    rclcpp::shutdown();
