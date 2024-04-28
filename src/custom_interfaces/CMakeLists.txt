@@ -26,6 +26,7 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
     "msg/SensorSample.msg"
+    "msg/SensorReadCombined.msg"
     "srv/SensorRead.srv"
 )
 ament_package()
