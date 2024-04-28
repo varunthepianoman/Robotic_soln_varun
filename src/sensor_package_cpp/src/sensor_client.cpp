@@ -1,6 +1,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "custom_interfaces/srv/sensor_read.hpp"
-#include <rclcpp/client.hpp>
+//#include <rclcpp/client.hpp>
+#include <string>
 
 
 #include <chrono>
@@ -24,10 +25,11 @@ public:
             // Favoring MutuallyExclusive over Reentrant as it is safer: We then won't have two queries accessing same server data_reservoir.
 
             rclcpp::CallbackGroup::SharedPtr callback_group = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
-            rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr client = this->create_client<custom_interfaces::srv::SensorRead>("sensor1_read_service", rmw_qos_profile_system_default, callback_group);
+//            rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr client = this->create_client<custom_interfaces::srv::SensorRead>("sensor1_read_service", rmw_qos_profile_system_default, callback_group);
+            rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr client = this->create_client<custom_interfaces::srv::SensorRead>("sensor1_read_service");
         }
 
-    rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse send_request()
+    auto send_request()
     {
         rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedRequest request;
         request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
@@ -35,13 +37,14 @@ public:
 
         while (!sensor_client->wait_for_service(1s)) {
             if (!rclcpp::ok()) {
-                RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
-                return 0;
+                RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service.");
+                rclcpp::shutdown();
             }
             RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
         }
 
-        rclcpp::Client<custom_interfaces::srv::SensorRead>::FutureAndRequestId result_future = sensor_client->async_send_request(request);
+        // rclcpp::Client<custom_interfaces::srv::SensorRead>::FutureAndRequestId
+        auto result_future = sensor_client->async_send_request(request);
 
         // Must wait for result as we have allowed Publisher and Client to run concurrently (in order to avoid deadlock). Timeout to guarantee a graceful finish
         std::future_status status = result_future.wait_for(1s);
@@ -50,7 +53,23 @@ public:
             RCLCPP_INFO(this->get_logger(), "Received response");
         }
 
-        return result_future.get();
+        // const rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse
+        //auto result_future_shared = result_future//.future.share();
+
+        // Curiously, the SharedResponse object seems to have overloaded the address-of (&) operator. I tried to return a pointer to the SharedResponse object and extract readings in the Publisher, but it gave me and allocator instead of an address.
+        // So, I just extract the readings here and return a pointer to them.
+        // Type I thought before: custom_interfaces::msg::SensorSample[]
+        const auto readings_output = result_future.get()->readings;
+
+//        std::cout << "readings" <<  readings_output
+
+//        auto test_addr = &result_future_get;
+//
+//        auto readings_sensor1_after_addressing = test_addr->readings;
+//        auto readings_sensor1_after_addressing_and_deref = (*test_addr)->readings;
+
+        // NOTE: Remember to handle zero-data case!
+        return readings_output;
 //        // Handled by my callback groups! Wait for the result.
 //        if (rclcpp::spin_until_future_complete(node, result) ==
 //            rclcpp::FutureReturnCode::SUCCESS) {
@@ -65,3 +84,4 @@ public:
 //    rclcpp::shutdown();
 //    return 0;
 
+//int main() {}

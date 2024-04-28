@@ -13,32 +13,48 @@ using namespace std::chrono_literals;
 
 class SensorReadPublisher : public rclcpp::Node
 {
-public:
-    SensorReadPublisher(rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor_client_1, rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor_client_2, int sensor_1_num_samples, int sensor_2_num_samples)
-            : Node("sensor_read_publisher")
-            , sensor_client_1 = sensor_client_1;
-            , sensor_client_2 = sensor_client_2;
-            , publisher_ = this->create_publisher<custom_interfaces::msg::SensorReadCombined>("sensor_read_500hz", 10);
-            , timer_ = this->create_wall_timer(2ms, std::bind(&SensorReadPublisher::timer_callback, this));
-            , sensor_1_num_samples = sensor_1_num_samples
-            , sensor_2_num_samples = sensor_2_num_samples
-    {
-    }
-
 private:
     void timer_callback()
     {
-        result_sensor_1 = this->sensor_client_1.send_request(this->sensor_1_num_samples);
-        result_sensor_2 = this->sensor_client_2.send_request(this->sensor_2_num_samples);
+        // Query both Clients for sensor data
+        // type i thought before: rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse*
+        auto result_sensor_1 = this->sensor1_client->send_request();
+        auto result_sensor_2 = this->sensor2_client->send_request();
+
+        // Generate combined message
         custom_interfaces::msg::SensorReadCombined message = custom_interfaces::msg::SensorReadCombined();
-        message.readings_sensor1 = result_sensor_1;
-        message.readings_sensor2 = result_sensor_2;
-        RCLCPP_INFO(this->get_logger(), "Publishing: '%s', and '%s'", message.readings_sensor1.c_str(), message.readings_sensor2.c_str());
+
+        // Put Sensor 1 and Sensor 2 data into combined message
+//        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse deref_result1 = (*result_sensor_1);
+
+//        message.readings_sensor1 = deref_result1->readings;
+//        message.readings_sensor2 = result_sensor_2.readings;
+//        auto r1 = result_sensor_1->readings;
+//        auto r2 = result_sensor_2->readings;
+
+        // Publish combined message
+        RCLCPP_INFO(this->get_logger(), "Publishing");
         publisher_->publish(message);
     }
+    SensorClient* sensor1_client;
+    SensorClient* sensor2_client;
+    rclcpp::Publisher<custom_interfaces::msg::SensorReadCombined>::SharedPtr publisher_;
     rclcpp::TimerBase::SharedPtr timer_;
-    rclcpp::Publisher<custom_interfaces::msg::SensorReadCombined>::SharedPtr publisher_; // CHANGE TYPE
-}
+    int sensor1_num_samples;
+    int sensor2_num_samples;
+public:
+    SensorReadPublisher(SensorClient* sensor1_client, SensorClient* sensor2_client, int sensor1_num_samples, int sensor2_num_samples)
+            : Node("sensor_read_publisher")
+            , sensor1_client {sensor1_client}
+            , sensor2_client {sensor2_client}
+            , publisher_ {this->create_publisher<custom_interfaces::msg::SensorReadCombined>("sensor_read_500hz", 10)}
+            , timer_ {this->create_wall_timer(2ms, std::bind(&SensorReadPublisher::timer_callback, this))}
+            , sensor1_num_samples {sensor1_num_samples}
+            , sensor2_num_samples {sensor2_num_samples}
+    {
+    }
+
+};
 
 // THIS WILL GO AWAY
 //int main(int argc, char * argv[])
@@ -48,3 +64,5 @@ private:
 //    rclcpp::shutdown();
 //    return 0;
 //}
+
+//int main() {}

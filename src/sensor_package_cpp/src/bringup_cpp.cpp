@@ -4,7 +4,7 @@
 #define CLIENT1_NUM_SAMPLES 2
 #define CLIENT2_NUM_SAMPLES 8
 
-int main() {
+int main(int argc, char** argv) {
     rclcpp::init(argc, argv);
 
     rclcpp::executors::MultiThreadedExecutor executor;
@@ -27,16 +27,16 @@ int main() {
     rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor2_client =
             client2_node->create_client<custom_interfaces::srv::SensorRead>("sensor2_read_service", rclcpp::QoS(10), client2_callback_group));
 
-    // make publisher
+    // make publisher: Remember to put Pointers to clients
     publisher = std::make_shared<SensorReadPublisher>(sensor1_client, sensor2_client, CLIENT1_NUM_SAMPLES, CLIENT2_NUM_SAMPLES);
 
     // make subscriber
 
-    short_subscriber_ = create_subscription<std_msgs::msg::String>(
-            "/short_topic", rclcpp::QoS(10),
-            std::bind(&MultiThreadMutuallyExclusiveSubscriber::ShortTopicCallback,
-                      this, std::placeholders::_1),
-            options);
+//    short_subscriber_ = create_subscription<std_msgs::msg::String>(
+//            "/short_topic", rclcpp::QoS(10),
+//            std::bind(&MultiThreadMutuallyExclusiveSubscriber::ShortTopicCallback,
+//                      this, std::placeholders::_1),
+//            options);
     subscriber = std::make_shared<SensorReadSubscriber>();
 
     executor.add_node(client1_node);
@@ -45,5 +45,7 @@ int main() {
     executor.add_node(subscriber);
 
     executor.spin();
+
+    return 0;
 
 }
