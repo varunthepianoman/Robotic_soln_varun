@@ -16,8 +16,8 @@ class SensorReadPublisher : public rclcpp::Node
 private:
     void timer_callback()
     {
-        (rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse)* result_sensor_1 = this->sensor1_client->send_request(this->sensor1_num_samples);
-        (rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse)* result_sensor_2 = this->sensor2_client->send_request(this->sensor2_num_samples);
+        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse* result_sensor_1 = this->sensor1_client->send_request(this->sensor1_num_samples);
+        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse* result_sensor_2 = this->sensor2_client->send_request(this->sensor2_num_samples);
         custom_interfaces::msg::SensorReadCombined message = custom_interfaces::msg::SensorReadCombined();
         rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse deref_result1 = (*result_sensor_1)
         message.readings_sensor1 = deref_result1.readings;
