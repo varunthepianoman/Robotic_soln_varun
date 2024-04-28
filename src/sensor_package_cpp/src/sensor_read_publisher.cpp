@@ -19,7 +19,7 @@ private:
         // Query both Clients for sensor data
         rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse* result_sensor_1 = this->sensor1_client->send_request();
         rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse* result_sensor_2 = this->sensor2_client->send_request();
-        
+
         // Generate combined message
         custom_interfaces::msg::SensorReadCombined message = custom_interfaces::msg::SensorReadCombined();
 
