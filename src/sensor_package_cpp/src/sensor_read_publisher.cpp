@@ -26,8 +26,8 @@ private:
     }
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Publisher<custom_interfaces::msg::SensorReadCombined>::SharedPtr publisher_;
-    rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor1_client;
-    rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor2_client;
+    SensorClient sensor1_client;
+    SensorClient sensor2_client;
     int sensor1_num_samples;
     int sensor2_num_samples;
 public:
