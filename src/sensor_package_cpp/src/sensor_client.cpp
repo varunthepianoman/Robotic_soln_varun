@@ -51,8 +51,8 @@ public:
             RCLCPP_INFO(this->get_logger(), "Received response");
         }
 
-        
-        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_future_get = result_future.get();
+        // Make static to preserve this returned variable
+        static rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_future_get = result_future.get();
 
         return &result_future_get
 //        // Handled by my callback groups! Wait for the result.
