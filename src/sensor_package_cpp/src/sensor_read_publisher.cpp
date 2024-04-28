@@ -24,9 +24,10 @@ private:
         custom_interfaces::msg::SensorReadCombined message = custom_interfaces::msg::SensorReadCombined();
 
         // Put Sensor 1 and Sensor 2 data into combined message
-        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse deref_result1 = (*result_sensor_1);
-        message.readings_sensor1 = deref_result1.readings;
-        message.readings_sensor2 = result_sensor_2.readings;
+        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse deref_twice_result1 = (**result_sensor_1);
+
+        // message.readings_sensor1 = deref_result1.readings;
+        // message.readings_sensor2 = result_sensor_2.readings;
 
         // Publish combined message
         RCLCPP_INFO(this->get_logger(), "Publishing: '%s', and '%s'", message.readings_sensor1.std::string::c_str(), message.readings_sensor2.std::string::c_str());
