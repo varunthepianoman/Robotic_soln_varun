@@ -28,7 +28,7 @@ public:
             rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr client = this->create_client<custom_interfaces::srv::SensorRead>("sensor1_read_service", rmw_qos_profile_system_default, callback_group);
         }
 
-    rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse send_request()
+    (rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse)* send_request()
     {
         rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedRequest request;
         request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
@@ -51,7 +51,7 @@ public:
             RCLCPP_INFO(this->get_logger(), "Received response");
         }
 
-        return result_future.get();
+        return &(result_future.get());
 //        // Handled by my callback groups! Wait for the result.
 //        if (rclcpp::spin_until_future_complete(node, result) ==
 //            rclcpp::FutureReturnCode::SUCCESS) {
