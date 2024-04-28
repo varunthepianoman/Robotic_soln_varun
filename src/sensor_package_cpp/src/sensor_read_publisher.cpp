@@ -16,10 +16,10 @@ class SensorReadPublisher : public rclcpp::Node
 public:
     SensorReadPublisher(rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor_client_1, rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor_client_2, int sensor_1_num_samples, int sensor_2_num_samples)
             : Node("sensor_read_publisher")
-            , sensor_client_1 = sensor_client_1;
-            , sensor_client_2 = sensor_client_2;
-            , publisher_ = this->create_publisher<custom_interfaces::msg::SensorReadCombined>("sensor_read_500hz", 10);
-            , timer_ = this->create_wall_timer(2ms, std::bind(&SensorReadPublisher::timer_callback, this));
+            , sensor_client_1 = sensor_client_1
+            , sensor_client_2 = sensor_client_2
+            , publisher_ = this->create_publisher<custom_interfaces::msg::SensorReadCombined>("sensor_read_500hz", 10)
+            , timer_ = this->create_wall_timer(2ms, std::bind(&SensorReadPublisher::timer_callback, this))
             , sensor_1_num_samples = sensor_1_num_samples
             , sensor_2_num_samples = sensor_2_num_samples
     {
@@ -38,7 +38,7 @@ private:
     }
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Publisher<custom_interfaces::msg::SensorReadCombined>::SharedPtr publisher_; // CHANGE TYPE
-}
+};
 
 // THIS WILL GO AWAY
 //int main(int argc, char * argv[])

@@ -32,11 +32,11 @@ int main() {
 
     // make subscriber
 
-    short_subscriber_ = create_subscription<std_msgs::msg::String>(
-            "/short_topic", rclcpp::QoS(10),
-            std::bind(&MultiThreadMutuallyExclusiveSubscriber::ShortTopicCallback,
-                      this, std::placeholders::_1),
-            options);
+//    short_subscriber_ = create_subscription<std_msgs::msg::String>(
+//            "/short_topic", rclcpp::QoS(10),
+//            std::bind(&MultiThreadMutuallyExclusiveSubscriber::ShortTopicCallback,
+//                      this, std::placeholders::_1),
+//            options);
     subscriber = std::make_shared<SensorReadSubscriber>();
 
     executor.add_node(client1_node);
