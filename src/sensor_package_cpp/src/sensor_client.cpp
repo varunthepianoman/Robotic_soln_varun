@@ -29,7 +29,7 @@ public:
 
     auto send_request()
     {
-        SharedRequest request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
+        rclcpp::Client::SharedRequest request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
         request->num_samples = this->num_samples;
 
         while (!sensor_client->wait_for_service(1s)) {
@@ -40,7 +40,7 @@ public:
             RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
         }
 
-        SharedResponse result = sensor_client->async_send_request(request);
+        rclcpp::Client::SharedResponse result = sensor_client->async_send_request(request);
 
         return result;
 //        // Handled by my callback groups! Wait for the result.
