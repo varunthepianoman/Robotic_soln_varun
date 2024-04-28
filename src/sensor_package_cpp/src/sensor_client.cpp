@@ -9,15 +9,18 @@
 using namespace std::chrono_literals;
 
 // Below is a wrapper class for an already-created node and client: We use this class to call the service.
-class SensorClient: {
+class SensorClient {
+private:
+    std::shared_ptr <rclcpp::Node> node;
+    rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor_client;
 public:
     SensorClient(std::shared_ptr <rclcpp::Node> node,
                  rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor_client) : {
-        self.node = node;
-        self.sensor_client = sensor_client;
+        this->node = node;
+        this->sensor_client = sensor_client;
     }
 
-    custom_interfaces::srv::SensorRead::Response send_request(self, num_samples):
+    custom_interfaces::srv::SensorRead::Response send_request(int num_samples):
     {
         auto request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
         request->num_samples = num_samples
