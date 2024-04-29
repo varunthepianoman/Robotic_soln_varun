@@ -23,7 +23,7 @@ include_directories(include)
 # Create Cpp executable
 add_executable(bringup_executable src/bringup_cpp.cpp)
 
-ament_target_dependencies(bringup_executable rclcpp)
+ament_target_dependencies(bringup_executable rclcpp custom_interfaces std_msgs)
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
 # Install Python executables
