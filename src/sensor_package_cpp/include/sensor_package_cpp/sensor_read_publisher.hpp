@@ -1,5 +1,5 @@
 #include "custom_interfaces/msg/sensor_read_combined.hpp"
-#include "sensor_client.cpp"
+#include "sensor_client.hpp"
 
 #include <chrono>
 #include <functional>
@@ -36,14 +36,17 @@ private:
         RCLCPP_INFO(this->get_logger(), "Publishing");
         publisher_->publish(message);
     }
-    SensorClient* sensor1_client;
-    SensorClient* sensor2_client;
+    rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor1_client;
+    rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor2_client;
     rclcpp::Publisher<custom_interfaces::msg::SensorReadCombined>::SharedPtr publisher_;
     rclcpp::TimerBase::SharedPtr timer_;
     int sensor1_num_samples;
     int sensor2_num_samples;
 public:
-    SensorReadPublisher(SensorClient* sensor1_client, SensorClient* sensor2_client, int sensor1_num_samples, int sensor2_num_samples)
+    SensorReadPublisher(rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor1_client,
+                        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor2_client,
+                        int sensor1_num_samples,
+                        int sensor2_num_samples)
             : Node("sensor_read_publisher")
             , sensor1_client {sensor1_client}
             , sensor2_client {sensor2_client}
@@ -64,5 +67,3 @@ public:
 //    rclcpp::shutdown();
 //    return 0;
 //}
-
-//int main() {}

@@ -5,7 +5,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# set(CMAKE_CXX_STANDARD 17) # Humble targets C++17.
+set(CMAKE_CXX_STANDARD 17) # Humble targets C++17.
 # Find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
@@ -21,15 +21,9 @@ find_package(std_msgs REQUIRED)
 # Include Cpp "include" directory
 include_directories(include)
 # Create Cpp executable
-add_executable(client_executable src/sensor_client.cpp)
-add_executable(pub_executable src/sensor_read_publisher.cpp)
-add_executable(sub_executable src/sensor_read_subscriber.cpp)
 add_executable(bringup_executable src/bringup_cpp.cpp)
 
-ament_target_dependencies(client_executable rclcpp custom_interfaces)
-ament_target_dependencies(pub_executable rclcpp custom_interfaces std_msgs)
-ament_target_dependencies(sub_executable rclcpp custom_interfaces)
-ament_target_dependencies(bringup_executable rclcpp)
+ament_target_dependencies(bringup_executable rclcpp custom_interfaces std_msgs)
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
 # Install Python executables
@@ -55,9 +49,6 @@ endif()
 
 # Install Cpp executables
 install(TARGETS
-  client_executable
-  pub_executable 
-  sub_executable 
   bringup_executable 
   DESTINATION lib/${PROJECT_NAME}
 )
