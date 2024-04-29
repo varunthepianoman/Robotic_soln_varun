@@ -4,7 +4,7 @@
 #define CLIENT1_NUM_SAMPLES 2
 #define CLIENT2_NUM_SAMPLES 8
 
-int main() {
+int main(int argc, char** argv) {
     rclcpp::init(argc, argv);
 
     rclcpp::executors::MultiThreadedExecutor executor;
