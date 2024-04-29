@@ -58,7 +58,8 @@ public:
 
         auto test_addr = &result_future_get;
 
-        auto readings_sensor1 = result_future_get->readings;
+        auto readings_sensor1_after_addressing = result_future_get->readings;
+        auto readings_sensor1_after_addressing_and_deref = (*result_future_get)->readings;
 
         return &result_future_get;
 //        // Handled by my callback groups! Wait for the result.
