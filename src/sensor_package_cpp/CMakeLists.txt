@@ -21,14 +21,8 @@ find_package(std_msgs REQUIRED)
 # Include Cpp "include" directory
 include_directories(include)
 # Create Cpp executable
-add_executable(client_executable include/sensor_package_cpp/sensor_client.hpp)
-add_executable(pub_executable include/sensor_package_cpp/sensor_read_publisher.hpp)
-add_executable(sub_executable include/sensor_package_cpp/sensor_read_subscriber.hpp)
 add_executable(bringup_executable src/bringup_cpp.cpp)
 
-ament_target_dependencies(client_executable rclcpp custom_interfaces)
-ament_target_dependencies(pub_executable rclcpp custom_interfaces std_msgs)
-ament_target_dependencies(sub_executable rclcpp custom_interfaces)
 ament_target_dependencies(bringup_executable rclcpp)
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
@@ -55,9 +49,6 @@ endif()
 
 # Install Cpp executables
 install(TARGETS
-  client_executable
-  pub_executable 
-  sub_executable 
   bringup_executable 
   DESTINATION lib/${PROJECT_NAME}
 )
