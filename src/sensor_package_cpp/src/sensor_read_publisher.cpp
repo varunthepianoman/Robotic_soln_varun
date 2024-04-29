@@ -28,8 +28,8 @@ private:
 
 //        message.readings_sensor1 = deref_result1->readings;
 //        message.readings_sensor2 = result_sensor_2.readings;
-        auto r1 = result_sensor_1->readings;
-        auto r2 = result_sensor_2->readings;
+//        auto r1 = result_sensor_1->readings;
+//        auto r2 = result_sensor_2->readings;
 
         // Publish combined message
         RCLCPP_INFO(this->get_logger(), "Publishing: '%s', and '%s'", message.readings_sensor1.std::string::c_str(), message.readings_sensor2.std::string::c_str());
