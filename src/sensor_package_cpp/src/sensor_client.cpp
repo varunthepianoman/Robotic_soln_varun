@@ -28,7 +28,7 @@ public:
             rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr client = this->create_client<custom_interfaces::srv::SensorRead>("sensor1_read_service", rmw_qos_profile_system_default, callback_group);
         }
 
-    rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse* send_request()
+    custom_interfaces::msg::SensorSample[] send_request()
     {
         rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedRequest request;
         request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
@@ -51,15 +51,16 @@ public:
             RCLCPP_INFO(this->get_logger(), "Received response");
         }
 
-        // Make static to preserve this returned variable
-        static rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_future_get = result_future.get();
+        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_future_get = result_future.get();
 
-        auto readings_sensor1 = result_future_get->readings;
+        // Curiously, the SharedResponse object seems to have overloaded the address-of (&) operator. I tried to return a pointer to the SharedResponse object and extract readings in the Publisher, but it gave me and allocator instead of an address.
+        // So, I just extract the readings here and return a pointer to them.
+        custom_interfaces::msg::SensorSample[] readings = result_future_get->readings;
 
         auto test_addr = &result_future_get;
 
-        auto readings_sensor1_after_addressing = result_future_get->readings;
-        auto readings_sensor1_after_addressing_and_deref = (*result_future_get)->readings;
+        auto readings_sensor1_after_addressing = test_addr->readings;
+        auto readings_sensor1_after_addressing_and_deref = (*test_addr)->readings;
 
         return &result_future_get;
 //        // Handled by my callback groups! Wait for the result.
