@@ -1,6 +1,6 @@
-#include "include/sensor_client.hpp"
-#include "include/sensor_read_publisher.hpp"
-#include "include/sensor_read_subscriber.hpp"
+#include "sensor_package_cpp/sensor_client.hpp"
+#include "sensor_package_cpp/sensor_read_publisher.hpp"
+#include "sensor_package_cpp/sensor_read_subscriber.hpp"
 #define CLIENT1_NUM_SAMPLES 2
 #define CLIENT2_NUM_SAMPLES 8
 
