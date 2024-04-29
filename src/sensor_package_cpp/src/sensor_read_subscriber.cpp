@@ -17,7 +17,7 @@ public:
 private:
     void topic_callback(const std_msgs::msg::String & msg) const
     {
-        RCLCPP_INFO(this->get_logger(), "Heard: '%s'", msg.data.c_str());
+        RCLCPP_INFO(this->get_logger(), "Heard");
     }
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
 };
