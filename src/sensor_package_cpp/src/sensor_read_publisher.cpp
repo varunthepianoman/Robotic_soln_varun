@@ -36,10 +36,10 @@ private:
         RCLCPP_INFO(this->get_logger(), "Publishing");
         publisher_->publish(message);
     }
-    rclcpp::TimerBase::SharedPtr timer_;
-    rclcpp::Publisher<custom_interfaces::msg::SensorReadCombined>::SharedPtr publisher_;
     SensorClient* sensor1_client;
     SensorClient* sensor2_client;
+    rclcpp::Publisher<custom_interfaces::msg::SensorReadCombined>::SharedPtr publisher_;
+    rclcpp::TimerBase::SharedPtr timer_;
     int sensor1_num_samples;
     int sensor2_num_samples;
 public:
