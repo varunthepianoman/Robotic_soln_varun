@@ -25,13 +25,12 @@ public:
             // Favoring MutuallyExclusive over Reentrant as it is safer: We then won't have two queries accessing same server data_reservoir.
 
             rclcpp::CallbackGroup::SharedPtr callback_group = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
-            rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr client = this->create_client<custom_interfaces::srv::SensorRead>("sensor1_read_service", rmw_qos_profile_system_default, callback_group);
+            rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr client = this->create_client<custom_interfaces::srv::SensorRead>("sensor1_read_service");
         }
 
     auto send_request()
     {
-        // rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedRequest
-//        auto request;
+        Client<custom_interfaces::srv::SensorRead>::SharedRequest request;
         auto request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
         request->num_samples = this->num_samples;
 
@@ -43,8 +42,7 @@ public:
             RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
         }
 
-        // rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedFuture
-        auto result_future = sensor_client->async_send_request(request);
+        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedFuture result_future = sensor_client->async_send_request(request);
 
         // Must wait for result as we have allowed Publisher and Client to run concurrently (in order to avoid deadlock). Timeout to guarantee a graceful finish
         std::future_status status = result_future.wait_for(1s);
@@ -53,12 +51,14 @@ public:
             RCLCPP_INFO(this->get_logger(), "Received response");
         }
 
-//        const rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_future_get = result_future.get();
+        const rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_future_get = result_future.get();
 
         // Curiously, the SharedResponse object seems to have overloaded the address-of (&) operator. I tried to return a pointer to the SharedResponse object and extract readings in the Publisher, but it gave me and allocator instead of an address.
         // So, I just extract the readings here and return a pointer to them.
         // Type I thought before: custom_interfaces::msg::SensorSample[]
         const auto readings_output = result_future.get()->readings;
+
+        std::cout << "readings" <<  readings_output
 
 //        auto test_addr = &result_future_get;
 //
