@@ -68,8 +68,9 @@ public:
 //        auto readings_sensor1_after_addressing = test_addr->readings;
 //        auto readings_sensor1_after_addressing_and_deref = (*test_addr)->readings;
 
+        double test_r = 0.0
         // NOTE: Remember to handle zero-data case!
-        return request//result_future//readings_output;
+        return test_r//request//result_future//readings_output;
 //        // Handled by my callback groups! Wait for the result.
 //        if (rclcpp::spin_until_future_complete(node, result) ==
 //            rclcpp::FutureReturnCode::SUCCESS) {
