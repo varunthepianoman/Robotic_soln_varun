@@ -21,9 +21,9 @@ find_package(std_msgs REQUIRED)
 # Include Cpp "include" directory
 include_directories(include)
 # Create Cpp executable
-add_executable(client_executable src/sensor_client.cpp)
-add_executable(pub_executable src/sensor_read_publisher.cpp)
-add_executable(sub_executable src/sensor_read_subscriber.cpp)
+add_executable(client_executable include/sensor_package_cpp/sensor_client.hpp)
+add_executable(pub_executable include/sensor_package_cpp/sensor_read_publisher.hpp)
+add_executable(sub_executable include/sensor_package_cpp/sensor_read_subscriber.hpp)
 add_executable(bringup_executable src/bringup_cpp.cpp)
 
 ament_target_dependencies(client_executable rclcpp custom_interfaces)
