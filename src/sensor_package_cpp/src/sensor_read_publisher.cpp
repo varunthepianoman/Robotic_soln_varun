@@ -43,7 +43,7 @@ private:
     int sensor1_num_samples;
     int sensor2_num_samples;
 public:
-    SensorReadPublisher(rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor1_client, rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor2_client, int sensor1_num_samples, int sensor2_num_samples)
+    SensorReadPublisher(SensorClient* sensor1_client, SensorClient* sensor2_client, int sensor1_num_samples, int sensor2_num_samples)
             : Node("sensor_read_publisher")
             , sensor1_client {sensor1_client}
             , sensor2_client {sensor2_client}
