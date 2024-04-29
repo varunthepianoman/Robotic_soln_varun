@@ -1,6 +1,6 @@
 #include "rclcpp/rclcpp.hpp"
 #include "custom_interfaces/srv/sensor_read.hpp"
-#include <rclcpp/client.hpp>
+//#include <rclcpp/client.hpp>
 #include <string>
 
 
@@ -31,7 +31,7 @@ public:
 
     auto send_request()
     {
-        Client<custom_interfaces::srv::SensorRead>::SharedRequest request;
+        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedRequest request;
         auto request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
         request->num_samples = this->num_samples;
 
@@ -43,7 +43,7 @@ public:
             RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
         }
 
-        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedFuture result_future = sensor_client->async_send_request(request);
+        rclcpp::Client<custom_interfaces::srv::SensorRead>::FutureAndRequestId result_future = sensor_client->async_send_request(request);
 
         // Must wait for result as we have allowed Publisher and Client to run concurrently (in order to avoid deadlock). Timeout to guarantee a graceful finish
         std::future_status status = result_future.wait_for(1s);
