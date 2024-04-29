@@ -51,7 +51,7 @@ public:
             RCLCPP_INFO(this->get_logger(), "Received response");
         }
 
-        rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_future_get = result_future.get();
+        const rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_future_get = result_future.get();
 
         // Curiously, the SharedResponse object seems to have overloaded the address-of (&) operator. I tried to return a pointer to the SharedResponse object and extract readings in the Publisher, but it gave me and allocator instead of an address.
         // So, I just extract the readings here and return a pointer to them.
