@@ -52,8 +52,9 @@ public:
         }
 
         // Make static to preserve this returned variable
-        static rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_future_get = result_future.future;
+        static rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse result_future_get = result_future.get();
 
+        auto readings_sensor1 = result_future_get->readings;
         return &result_future_get;
 //        // Handled by my callback groups! Wait for the result.
 //        if (rclcpp::spin_until_future_complete(node, result) ==
