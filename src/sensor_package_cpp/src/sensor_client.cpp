@@ -56,7 +56,7 @@ public:
         // Curiously, the SharedResponse object seems to have overloaded the address-of (&) operator. I tried to return a pointer to the SharedResponse object and extract readings in the Publisher, but it gave me and allocator instead of an address.
         // So, I just extract the readings here and return a pointer to them.
         // Type I thought before: custom_interfaces::msg::SensorSample[]
-        auto readings_output = static_cast<rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse>(result_future_get)->readings;
+        const auto readings_output = static_cast<rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse>(result_future_get)->static_castreadings;
 
 //        auto test_addr = &result_future_get;
 //
