@@ -35,7 +35,7 @@ private:
         print_sensor_sample(sensor2_data);
     }
 
-    void print_sensor_sample(const &std::vector<std::vector<double>> &sensor_data) const
+    void print_sensor_sample(const std::vector<std::vector<double>> &sensor_data) const
     {
         for (int i = 0; i < sizeof(sensor_data); i++) {
             RCLCPP_INFO(this->get_logger(), "Sample ");
