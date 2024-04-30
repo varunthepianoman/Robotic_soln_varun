@@ -27,8 +27,8 @@ private:
     void topic_callback(const custom_interfaces::msg::SensorReadCombined & msg) const
     {
         RCLCPP_INFO(this->get_logger(), "Heard");
-        auto sensor1_data = msg.readings_sensor1;
-        auto sensor2_data = msg.readings_sensor2;
+        const auto sensor1_data = msg.readings_sensor1;
+        const auto sensor2_data = msg.readings_sensor2;
         RCLCPP_INFO(this->get_logger(), "Sensor 1 Data:\n");
         print_sensor_sample(sensor1_data);
         RCLCPP_INFO(this->get_logger(), "Sensor 2 Data:\n");
@@ -36,13 +36,13 @@ private:
 
 
     }
-    void print_sensor_sample(auto sensor_data) {
+    void print_sensor_sample(const auto sensor_data) {
         for (int i = 0; i < sizeof(sensor_data); i++) {
             RCLCPP_INFO(this->get_logger(), "Sample ");
-            RCLCPP_INFO(this->get_logger(), i)
+            RCLCPP_INFO(this->get_logger(), i);
             RCLCPP_INFO(this->get_logger(), ": ");
             for (int j = 0; j < 6; j++) {
-                RCLCPP_INFO(this->get_logger(), sensor_data[i][j])
+                RCLCPP_INFO(this->get_logger(), sensor_data[i][j]);
             }
         }
     }
