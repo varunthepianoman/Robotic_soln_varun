@@ -39,13 +39,15 @@ private:
 
     void print_sensor_sample(const std::shared_ptr<rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample>>> sensor_data) const
     {
-        for (int i = 0; i < sizeof(sensor_data); i++) {
-            RCLCPP_INFO(this->get_logger(), "Sample ");
-            RCLCPP_INFO(this->get_logger(), std::string(i).c_str());
-            RCLCPP_INFO(this->get_logger(), ": ");
-            for (int j = 0; j < 6; j++) {
-                RCLCPP_INFO(this->get_logger(), *sensor_data[i][j].c_str());
+        for (custom_interfaces::msg::SensorSample sample : sensor_data) {
+            std::string sample_line = "Sample " + std::to_string(i) + ": "
+            RCLCPP_INFO(this->get_logger(), sample_line);
+            std::string data_line = "[";
+            for (double datapoint : sample.data) {
+                data_line += std::to_string(datapoint) + " "
             }
+            std::string data_line += "]";
+            RCLCPP_INFO(this->get_logger(), data_line);
         }
     }
 };
