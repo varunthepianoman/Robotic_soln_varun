@@ -8,10 +8,13 @@ int main(int argc, char** argv) {
 
     rclcpp::executors::MultiThreadedExecutor executor;
 
-    // Configure SubscriptionOptions to assign a new callback group for SubscriptionOptions as well so it can be run in parallel to Publisher.
-    rclcpp::SubscriptionOptions options;
-    options.callback_group =
-            create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+    // make subscriber
+
+//    short_subscriber_ = create_subscription<std_msgs::msg::String>(
+//            "/short_topic", rclcpp::QoS(10),
+//            std::bind(&MultiThreadMutuallyExclusiveSubscriber::ShortTopicCallback,
+//                      this, std::placeholders::_1),
+//            options);
 
     //  Create client objects
     // node for clients 1 and 2
@@ -29,13 +32,6 @@ int main(int argc, char** argv) {
     // make publisher: Remember to put Pointers to clients
     publisher = std::make_shared<SensorReadPublisher>(sensor1_client, sensor2_client, CLIENT1_NUM_SAMPLES, CLIENT2_NUM_SAMPLES);
 
-    // make subscriber
-
-//    short_subscriber_ = create_subscription<std_msgs::msg::String>(
-//            "/short_topic", rclcpp::QoS(10),
-//            std::bind(&MultiThreadMutuallyExclusiveSubscriber::ShortTopicCallback,
-//                      this, std::placeholders::_1),
-//            options);
     subscriber = std::make_shared<SensorReadSubscriber>();
 
     executor.add_node(client1_node);

@@ -11,9 +11,15 @@ class SensorReadSubscriber : public rclcpp::Node
 public:
     SensorReadSubscriber()
             : Node("sensor_read_subscriber")
-            , subscription_ {this->create_subscription<custom_interfaces::msg::SensorReadCombined>(
-                "sensor_read_500hz", 10, std::bind(&SensorReadSubscriber::topic_callback, this, _1))}
     {
+        // Configure SubscriptionOptions to assign a new callback group for SubscriptionOptions so it can be run in parallel to Publisher.
+        rclcpp::SubscriptionOptions options;
+        options.callback_group = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+
+        subscription_ {this->create_subscription<custom_interfaces::msg::SensorReadCombined>(
+                "sensor_read_500hz", 10, std::bind(&SensorReadSubscriber::topic_callback, this, _1), options)};
+
+
     }
 
 private:
