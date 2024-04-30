@@ -40,15 +40,17 @@ private:
     template<int N>
     void print_sensor_sample(const std::shared_ptr<rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, N>> sensor_data) const
     {
-        for (custom_interfaces::msg::SensorSample sample : sensor_data) {
+        int i = 0;
+        for (custom_interfaces::msg::SensorSample sample : *sensor_data) {
             std::string sample_line = "Sample " + std::to_string(i) + ": "
-            RCLCPP_INFO(this->get_logger(), sample_line);
+            RCLCPP_INFO(this->get_logger(), sample_line.c_str());
             std::string data_line = "[";
             for (double datapoint : sample.data) {
                 data_line += std::to_string(datapoint) + " "
             }
             std::string data_line += "]";
-            RCLCPP_INFO(this->get_logger(), data_line);
+            RCLCPP_INFO(this->get_logger(), data_line.c_str());
+            i++;
         }
     }
 };
