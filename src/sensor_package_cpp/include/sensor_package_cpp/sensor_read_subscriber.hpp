@@ -38,7 +38,7 @@ private:
     }
 
     template<int N>
-    void print_sensor_sample(const std::shared_ptr<rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, N>> sensor_data) const
+    void print_sensor_sample(std::shared_ptr<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, N>> sensor_data) const
     {
         int i = 0;
         for (custom_interfaces::msg::SensorSample sample : *sensor_data) {
