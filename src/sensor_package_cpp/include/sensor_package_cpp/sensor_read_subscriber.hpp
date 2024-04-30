@@ -29,22 +29,22 @@ private:
     void topic_callback(const custom_interfaces::msg::SensorReadCombined & msg) const
     {
         RCLCPP_INFO(this->get_logger(), "Heard");
-        const std::shared_ptr<std::vector<std::vector<double>>> sensor1_data = std::make_shared<std::vector<std::vector<double>>>(msg.readings_sensor1);
-        const std::shared_ptr<std::vector<std::vector<double>>> sensor2_data = std::make_shared<std::vector<std::vector<double>>>(msg.readings_sensor2);
+        const std::shared_ptr<rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample>> sensor1_data = std::make_shared<rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample>>>(msg.readings_sensor1);
+        const std::shared_ptr<rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample>> sensor2_data = std::make_shared<rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample>>>(msg.readings_sensor2);
         RCLCPP_INFO(this->get_logger(), "Sensor 1 Data:\n");
         print_sensor_sample(sensor1_data);
         RCLCPP_INFO(this->get_logger(), "Sensor 2 Data:\n");
         print_sensor_sample(sensor2_data);
     }
 
-    void print_sensor_sample(const std::shared_ptr<std::vector<std::vector<double>>> sensor_data) const
+    void print_sensor_sample(const std::shared_ptr<rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample>>> sensor_data) const
     {
         for (int i = 0; i < sizeof(sensor_data); i++) {
-            RCLCPP_INFO(this->get_logger(), "Sample ".c_str());
-            RCLCPP_INFO(this->get_logger(), i.c_str());
-            RCLCPP_INFO(this->get_logger(), ": ".c_str());
+            RCLCPP_INFO(this->get_logger(), "Sample ");
+            RCLCPP_INFO(this->get_logger(), std::string(i).c_str());
+            RCLCPP_INFO(this->get_logger(), ": ");
             for (int j = 0; j < 6; j++) {
-                RCLCPP_INFO(this->get_logger(), sensor_data[i][j].c_str());
+                RCLCPP_INFO(this->get_logger(), *sensor_data[i][j].c_str());
             }
         }
     }
