@@ -2,6 +2,8 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "custom_interfaces/msg/sensor_read_combined.hpp"
+#include "std_msgs/msg/string.hpp"
+
 #include <iostream>
 using std::placeholders::_1;
 
@@ -21,7 +23,7 @@ public:
     }
 
 private:
-    void topic_callback(const std_msgs::msg::String & msg) const
+    void topic_callback(const custom_interfaces::msg::SensorReadCombined & msg) const
     {
         RCLCPP_INFO(this->get_logger(), "Heard");
 //        std::cout << msg
