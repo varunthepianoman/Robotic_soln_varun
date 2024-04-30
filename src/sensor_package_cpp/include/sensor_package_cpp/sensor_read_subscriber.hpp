@@ -29,8 +29,8 @@ private:
     void topic_callback(const custom_interfaces::msg::SensorReadCombined & msg) const
     {
         RCLCPP_INFO(this->get_logger(), "Heard");
-        std::shared_ptr<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>> sensor1_data = std::make_shared<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>>(msg.readings_sensor1);
-        std::shared_ptr<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 2>> sensor2_data = std::make_shared<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 2>>(msg.readings_sensor2);
+        std::shared_ptr<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 2>> sensor1_data = std::make_shared<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 2>>(msg.readings_sensor1typo);
+        std::shared_ptr<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>> sensor2_data = std::make_shared<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>>(msg.readings_sensor2);
         RCLCPP_INFO(this->get_logger(), "Sensor 1 Data:\n");
         print_sensor_sample<8>(sensor1_data);
         RCLCPP_INFO(this->get_logger(), "Sensor 2 Data:\n");
