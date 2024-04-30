@@ -10,14 +10,14 @@ int main(int argc, char** argv) {
     rclcpp::executors::MultiThreadedExecutor executor;
 
     // make 2 SensorClient objects, one for each sensor.
-    SensorClient sensor1_client = std::make_shared<SensorClient>("sensor1_client", CLIENT1_NUM_SAMPLES);
-    SensorClient sensor2_client = std::make_shared<SensorClient>("sensor2_client", CLIENT2_NUM_SAMPLES);
+    rclcpp::Node::SharedPtr SensorClient sensor1_client = std::make_shared<SensorClient>("sensor1_client", CLIENT1_NUM_SAMPLES);
+    rclcpp::Node::SharedPtr SensorClient sensor2_client = std::make_shared<SensorClient>("sensor2_client", CLIENT2_NUM_SAMPLES);
 
     // make SensorReadPublisher
-    publisher = std::make_shared<SensorReadPublisher>(sensor1_client, sensor2_client, CLIENT1_NUM_SAMPLES, CLIENT2_NUM_SAMPLES);
+    rclcpp::Node::SharedPtr publisher = std::make_shared<SensorReadPublisher>(sensor1_client, sensor2_client, CLIENT1_NUM_SAMPLES, CLIENT2_NUM_SAMPLES);
 
     // make SensorReadSubscriber
-    subscriber = std::make_shared<SensorReadSubscriber>();
+    rclcpp::Node::SharedPtr subscriber = std::make_shared<SensorReadSubscriber>();
 
     // Add all 4 nodes to our executor
     executor.add_node(client1_node);
