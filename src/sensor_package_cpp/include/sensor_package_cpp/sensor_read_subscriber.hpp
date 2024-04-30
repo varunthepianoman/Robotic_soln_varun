@@ -27,7 +27,7 @@ private:
     void topic_callback(const std_msgs::msg::String & msg) const
     {
         RCLCPP_INFO(this->get_logger(), "Heard");
-        std::cout << msg
+//        std::cout << msg
     }
     rclcpp::Subscription<custom_interfaces::msg::SensorReadCombined>::SharedPtr subscription_;
 };
