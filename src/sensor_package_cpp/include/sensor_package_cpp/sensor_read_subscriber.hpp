@@ -29,8 +29,8 @@ private:
     void topic_callback(const custom_interfaces::msg::SensorReadCombined & msg) const
     {
         RCLCPP_INFO(this->get_logger(), "Heard");
-        const std::shared_ptr<rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>> sensor1_data = std::make_shared<rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>>(msg.readings_sensor1);
-        const std::shared_ptr<rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 2>> sensor2_data = std::make_shared<rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 2>>(msg.readings_sensor2);
+        const std::shared_ptr<rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>> sensor1_data = std::make_shared<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>>(msg.readings_sensor1);
+        const std::shared_ptr<rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 2>> sensor2_data = std::make_shared<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 2>>(msg.readings_sensor2);
         RCLCPP_INFO(this->get_logger(), "Sensor 1 Data:\n");
         print_sensor_sample<8>(sensor1_data);
         RCLCPP_INFO(this->get_logger(), "Sensor 2 Data:\n");
@@ -42,13 +42,13 @@ private:
     {
         int i = 0;
         for (custom_interfaces::msg::SensorSample sample : *sensor_data) {
-            std::string sample_line = "Sample " + std::to_string(i) + ": "
+            std::string sample_line = "Sample " + std::to_string(i) + ": ";
             RCLCPP_INFO(this->get_logger(), sample_line.c_str());
             std::string data_line = "[";
             for (double datapoint : sample.data) {
-                data_line += std::to_string(datapoint) + " "
+                data_line += std::to_string(datapoint) + " ";
             }
-            std::string data_line += "]";
+            data_line += "]";
             RCLCPP_INFO(this->get_logger(), data_line.c_str());
             i++;
         }
