@@ -36,7 +36,8 @@ private:
 
 
     }
-    void print_sensor_sample(const auto sensor_data) {
+    void print_sensor_sample(const auto sensor_data)  const
+    {
         for (int i = 0; i < sizeof(sensor_data); i++) {
             RCLCPP_INFO(this->get_logger(), "Sample ");
             RCLCPP_INFO(this->get_logger(), i);
