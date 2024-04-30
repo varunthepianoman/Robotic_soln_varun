@@ -43,7 +43,7 @@ private:
     int sensor1_num_samples;
     int sensor2_num_samples;
 public:
-    SensorReadPublisher(std::shared_ptr<SensorClient> sensor1_client, std::shared_ptr<SensorClient> sensor2_client, int sensor1_num_samples, int sensor2_num_samples)
+    SensorReadPublisher(rclcpp::Node::SharedPtr sensor1_client, rclcpp::Node::SharedPtr sensor2_client, int sensor1_num_samples, int sensor2_num_samples)
             : Node("sensor_read_publisher")
             , sensor1_client {sensor1_client}
             , sensor2_client {sensor2_client}
