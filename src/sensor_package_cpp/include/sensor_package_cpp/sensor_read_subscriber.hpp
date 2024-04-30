@@ -3,6 +3,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "custom_interfaces/msg/sensor_read_combined.hpp"
 using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
 
 class SensorReadSubscriber : public rclcpp::Node
 {
@@ -19,7 +21,7 @@ private:
     {
         RCLCPP_INFO(this->get_logger(), "Heard");
     }
-    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+    rclcpp::Subscription<custom_interfaces::msg::SensorReadCombined>::SharedPtr subscription_;
 };
 
 //int main(int argc, char * argv[])
