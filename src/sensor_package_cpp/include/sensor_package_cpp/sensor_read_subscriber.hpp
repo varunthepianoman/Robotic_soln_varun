@@ -27,8 +27,8 @@ private:
     void topic_callback(const custom_interfaces::msg::SensorReadCombined & msg) const
     {
         RCLCPP_INFO(this->get_logger(), "Heard");
-        const std::vector<std::vector<double>> sensor1_data = std::make_shared<std::vector<std::vector<double>>>(msg.readings_sensor1);
-        const std::vector<std::vector<double>> sensor2_data = std::make_shared<std::vector<std::vector<double>>>(msg.readings_sensor2);
+        const std::shared_ptr<std::vector<std::vector<double>>> sensor1_data = std::make_shared<std::vector<std::vector<double>>>(msg.readings_sensor1);
+        const std::shared_ptr<std::vector<std::vector<double>>> sensor2_data = std::make_shared<std::vector<std::vector<double>>>(msg.readings_sensor2);
         RCLCPP_INFO(this->get_logger(), "Sensor 1 Data:\n");
         print_sensor_sample(sensor1_data);
         RCLCPP_INFO(this->get_logger(), "Sensor 2 Data:\n");
