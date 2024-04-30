@@ -4,8 +4,6 @@
 #include "custom_interfaces/msg/sensor_read_combined.hpp"
 #include <iostream>
 using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
 
 class SensorReadSubscriber : public rclcpp::Node
 {
@@ -17,9 +15,8 @@ public:
         rclcpp::SubscriptionOptions options;
         options.callback_group = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
 
-        subscription_ = this->create_subscription<custom_interfaces::msg::SensorReadCombined>(
-                "sensor_read_500hz", 10, std::bind(&SensorReadSubscriber::topic_callback, this, _1), options);
-
+        // subscription_ = this->create_subscription<custom_interfaces::msg::SensorReadCombined>(
+        //         "sensor_read_500hz", 10, std::bind(&SensorReadSubscriber::topic_callback, this, _1), options);
 
     }
 
