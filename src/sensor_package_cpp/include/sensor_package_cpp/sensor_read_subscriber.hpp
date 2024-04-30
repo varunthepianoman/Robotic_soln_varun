@@ -3,6 +3,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "custom_interfaces/msg/sensor_read_combined.hpp"
 #include "std_msgs/msg/string.hpp"
+#include<cstring>
+#include<string>
 
 #include <iostream>
 using std::placeholders::_1;
@@ -35,14 +37,14 @@ private:
         print_sensor_sample(sensor2_data);
     }
 
-    void print_sensor_sample(const std::vector<std::vector<double>> &sensor_data) const
+    void print_sensor_sample(const std::shared_ptr<std::vector<std::vector<double>>> sensor_data) const
     {
         for (int i = 0; i < sizeof(sensor_data); i++) {
-            RCLCPP_INFO(this->get_logger(), "Sample ");
-            RCLCPP_INFO(this->get_logger(), i);
-            RCLCPP_INFO(this->get_logger(), ": ");
+            RCLCPP_INFO(this->get_logger(), "Sample ".c_str());
+            RCLCPP_INFO(this->get_logger(), i.c_str());
+            RCLCPP_INFO(this->get_logger(), ": ".c_str());
             for (int j = 0; j < 6; j++) {
-                RCLCPP_INFO(this->get_logger(), sensor_data[i][j]);
+                RCLCPP_INFO(this->get_logger(), sensor_data[i][j].c_str());
             }
         }
     }
