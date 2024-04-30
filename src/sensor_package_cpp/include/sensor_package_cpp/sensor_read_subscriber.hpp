@@ -2,6 +2,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "custom_interfaces/msg/sensor_read_combined.hpp"
+#include <iostream>
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
