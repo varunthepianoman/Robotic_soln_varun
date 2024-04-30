@@ -20,8 +20,8 @@ int main(int argc, char** argv) {
     // node for clients 1 and 2
     std::shared_ptr <rclcpp::Node> client1_node = rclcpp::Node::make_shared("sensor1_client_node");
 
-    SensorClient sensor1_client = SensorClient("sensor1_client", CLIENT1_NUM_SAMPLES)
-    SensorClient sensor2_client = SensorClient("sensor2_client", CLIENT2_NUM_SAMPLES)
+    SensorClient sensor1_client = SensorClient("sensor1_client", CLIENT1_NUM_SAMPLES);
+    SensorClient sensor2_client = SensorClient("sensor2_client", CLIENT2_NUM_SAMPLES);
 
     // make clients in nodes
     rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor1_client =
