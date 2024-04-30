@@ -36,14 +36,17 @@ private:
         RCLCPP_INFO(this->get_logger(), "Publishing");
         publisher_->publish(message);
     }
-    rclcpp::Node::SharedPtr SensorClient sensor1_client;
-    rclcpp::Node::SharedPtr sensor2_client;
+    rclcpp::Client<custom_interfaces::msg::SensorReadCombined>::SharedPtr sensor1_client;
+    rclcpp::Client<custom_interfaces::msg::SensorReadCombined>::SharedPtr sensor2_client;
     rclcpp::Publisher<custom_interfaces::msg::SensorReadCombined>::SharedPtr publisher_;
     rclcpp::TimerBase::SharedPtr timer_;
     int sensor1_num_samples;
     int sensor2_num_samples;
 public:
-    SensorReadPublisher(rclcpp::Node::SharedPtr sensor1_client, rclcpp::Node::SharedPtr sensor2_client, int sensor1_num_samples, int sensor2_num_samples)
+    SensorReadPublisher(rclcpp::Client<custom_interfaces::msg::SensorReadCombined>::SharedPtr sensor1_client,
+                        rclcpp::Client<custom_interfaces::msg::SensorReadCombined>::SharedPtr sensor2_client,
+                        int sensor1_num_samples,
+                        int sensor2_num_samples)
             : Node("sensor_read_publisher")
             , sensor1_client {sensor1_client}
             , sensor2_client {sensor2_client}
