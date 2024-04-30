@@ -20,8 +20,8 @@ int main(int argc, char** argv) {
     rclcpp::Node::SharedPtr subscriber = std::make_shared<SensorReadSubscriber>();
 
     // Add all 4 nodes to our executor
-    executor.add_node(client1_node);
-    executor.add_node(client2_node);
+    executor.add_node(sensor1_client);
+    executor.add_node(sensor2_client);
     executor.add_node(publisher);
     executor.add_node(subscriber);
 
