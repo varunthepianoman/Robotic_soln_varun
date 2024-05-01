@@ -28,9 +28,12 @@ public:
 
     auto send_request()
     {
+        RCLCPP_INFO(this->get_logger(), "send request client");
         rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedRequest request;
         request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
         request->num_samples = this->num_samples;
+        RCLCPP_INFO(this->get_logger(), "about to wait");
+        
 
         while (!sensor_client->wait_for_service(1s)) {
             if (!rclcpp::ok()) {
