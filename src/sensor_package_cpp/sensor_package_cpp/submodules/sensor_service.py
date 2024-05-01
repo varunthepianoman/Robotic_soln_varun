@@ -26,7 +26,18 @@ class SensorService(Node):
                  sensor_id: int,
                  number_of_samples: int):
         super().__init__('sensor_service_' + str(sensor_id))
-        # Callback groups: Services can run in parallel so put each in its own callback group.
+        self.data_reservoir = deque(maxlen=buffer_size) # Data reservoir is a deque reservoir of the last buffer_size samples.
+
+        # Create a TCP/IP socket
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        # Connect the socket to the port where the server is listening
+        server_address = (address, port)
+        print('sensor service ' + str(sensor_id) ' connecting to {} port {}'.format(*server_address))
+        self.sock.connect(server_address)
+        print('connected')
+
+    # Callback groups: Services can run in parallel so put each in its own callback group.
         # Use MutuallyExclusiveCallback instead of Reentrant so that we ensure that the earliest call gets the earliest data for publishing.
         # (We are unlikely to have multiple queued callbacks as our timer publisher runs only every 2ms.)
         service_callback_group = rclpy.callback_groups.MutuallyExclusiveCallbackGroup()
@@ -41,17 +52,6 @@ class SensorService(Node):
         sensor_thread = Thread(target = self.query_for_samples)
         sensor_thread.daemon = True
         sensor_thread.start()
-
-        self.data_reservoir = deque(maxlen=buffer_size) # Data reservoir is a deque reservoir of the last buffer_size samples.
-
-        # Create a TCP/IP socket
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-        # Connect the socket to the port where the server is listening
-        server_address = (address, port)
-        print('connecting to {} port {}'.format(*server_address))
-        self.sock.connect(server_address)
-        print('connected')
 
     def sensor_read_callback(self, request, response):
         # Request num_samples samples from the sensor
