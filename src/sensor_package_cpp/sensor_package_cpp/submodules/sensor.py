@@ -29,6 +29,7 @@ class Sensor(Thread):
         self.server_address = (address, port)
         
         # Bind the server arg to the socket
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind(self.server_address)
         print(self.server_address)
         # Listen for incoming connections
