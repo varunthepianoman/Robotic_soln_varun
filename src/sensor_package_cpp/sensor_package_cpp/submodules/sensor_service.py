@@ -25,7 +25,7 @@ class SensorService(Node):
                  _delay: float,
                  sensor_id: int,
                  number_of_samples: int):
-        super().__init__('sensor_service_' + sensor_id)
+        super().__init__('sensor_service_' + str(sensor_id))
         # Callback groups: Services can run in parallel so put each in its own callback group.
         # Use MutuallyExclusiveCallback instead of Reentrant so that we ensure that the earliest call gets the earliest data for publishing.
         # (We are unlikely to have multiple queued callbacks as our timer publisher runs only every 2ms.)
