@@ -36,7 +36,7 @@ class Sensor(Thread):
 
         print('_id', _id)
 
-        print('sensor ' + str(_id) + ' listnening at ' + self.server_address)
+        print('sensor ' + str(_id) + ' listnening at ' + ' connecting to {} port {}'.format(*self.server_address))
 
         # This is an artificial delay we add as the over head
         self.overhead_delay = _delay 
