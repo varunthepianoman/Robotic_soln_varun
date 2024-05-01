@@ -33,11 +33,11 @@ class SensorService(Node):
 
         # Connect the socket to the port where the server is listening
         server_address = (address, port)
-        print('sensor service ' + str(sensor_id) ' connecting to {} port {}'.format(*server_address))
+        print('sensor service ' + str(sensor_id) + ' connecting to {} port {}'.format(*server_address))
         self.sock.connect(server_address)
         print('connected')
 
-    # Callback groups: Services can run in parallel so put each in its own callback group.
+        # Callback groups: Services can run in parallel so put each in its own callback group.
         # Use MutuallyExclusiveCallback instead of Reentrant so that we ensure that the earliest call gets the earliest data for publishing.
         # (We are unlikely to have multiple queued callbacks as our timer publisher runs only every 2ms.)
         service_callback_group = rclpy.callback_groups.MutuallyExclusiveCallbackGroup()
