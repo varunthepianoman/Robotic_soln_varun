@@ -14,16 +14,19 @@ class SensorClient: public rclcpp::Node {
 private:
     rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor_client;
     int num_samples;
+    int sensor_id;
 public:
-    SensorClient(std::string name, int num_samples)
+    SensorClient(std::string name, int sensor_id, int num_samples)
         : Node(name)
+        , sensor_id{sensor_id}
         , num_samples{num_samples}
         {
             // The clients are called within the publisher, so they must be in different Callback Groups than Publisher to avoid deadlock.
             // Clients 1 and 2 can be called in parallel, so place them in different Callback Groups as well.
             // Favoring MutuallyExclusive over Reentrant as it is safer: We then won't have two queries accessing same server data_reservoir.
             rclcpp::CallbackGroup::SharedPtr callback_group = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
-            this->sensor_client = this->create_client<custom_interfaces::srv::SensorRead>("sensor1_read_service", rmw_qos_profile_system_default, callback_group);
+            std::string client_name = std::string("sensor") + std::to_string(sensor_id) + "_read_service"
+            this->sensor_client = this->create_client<custom_interfaces::srv::SensorRead>(client_name, rmw_qos_profile_system_default, callback_group);
         }
 
     auto send_request()

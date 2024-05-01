@@ -23,15 +23,17 @@ class SensorService(Node):
                  port: int,
                  sampling_rate: int,
                  _delay: float,
+                 sensor_id: int,
                  number_of_samples: int):
-        super().__init__('sensor_service')
+        super().__init__('sensor_service_' + sensor_id)
         # Callback groups: Services can run in parallel so put each in its own callback group.
         # Use MutuallyExclusiveCallback instead of Reentrant so that we ensure that the earliest call gets the earliest data for publishing.
         # (We are unlikely to have multiple queued callbacks as our timer publisher runs only every 2ms.)
         service_callback_group = rclpy.callback_groups.MutuallyExclusiveCallbackGroup()
 
         self.srv = self.create_service(SensorRead, 'sensor_read_service', self.sensor_read_callback, callback_group=service_callback_group)
-        self.sensor = Sensor(address, port, sampling_rate, _delay) # Define a sensor with sampling rate and delay defined in constructor args
+        self.sensor = Sensor(address, port, sampling_rate, _delay, id) # Define a sensor with sampling rate and delay defined in constructor args
+        self.sensor_id = sensor_id
         self.number_of_samples = number_of_samples
 
         # Separate thread for sensor querying is required: if not, we will get stuck in the "while True" loop querying for sensor samples.
