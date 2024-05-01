@@ -19,7 +19,8 @@ class Sensor(Thread):
         address: str,
         port: int,
         sampling_rate: int,
-        _delay: float) -> None:
+        _delay: float,
+        id: int) -> None:
         
         # Create a TCP/IP socket
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -43,6 +44,7 @@ class Sensor(Thread):
         self.connected = False
         self.DOF = 6
         self.sampling_rate = sampling_rate
+        self.id = id
         
 
     def connect(self) -> bool:

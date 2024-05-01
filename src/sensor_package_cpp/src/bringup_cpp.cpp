@@ -14,8 +14,8 @@ int main(int argc, char** argv) {
     rclcpp::executors::MultiThreadedExecutor executor;
 
     // make 2 SensorClient objects, one for each sensor.
-    std::shared_ptr<SensorClient> sensor1_client = std::make_shared<SensorClient>("sensor1_client", CLIENT1_NUM_SAMPLES);
-    std::shared_ptr<SensorClient> sensor2_client = std::make_shared<SensorClient>("sensor2_client", CLIENT2_NUM_SAMPLES);
+    std::shared_ptr<SensorClient> sensor1_client = std::make_shared<SensorClient>("sensor1_client", 1, CLIENT1_NUM_SAMPLES);
+    std::shared_ptr<SensorClient> sensor2_client = std::make_shared<SensorClient>("sensor2_client", 2, CLIENT2_NUM_SAMPLES);
 
     // make SensorReadPublisher
     std::shared_ptr<SensorReadPublisher> publisher = std::make_shared<SensorReadPublisher>(sensor1_client, sensor2_client, CLIENT1_NUM_SAMPLES, CLIENT2_NUM_SAMPLES);
@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     executor.spin();
 
     // Shutdown
-    rclpy::shutdown();
+    rclcpp::shutdown();
 
     return 0;
 
