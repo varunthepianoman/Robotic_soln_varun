@@ -11,6 +11,8 @@ import socket
 import sys
 import time
 from threading import Thread, Timer
+from multiprocessing import Process
+
 
 buffer_size = 32 # How many sensor samples to store in our buffer: We need 2 maximum for sensor1 and 8 maximum for sensor2. Store 32 for safety.
 
@@ -19,12 +21,20 @@ class SensorService(Node):
 
     def __init__(self, sensor_args, number_of_samples):
         super().__init__('sensor_service')
-        self.srv = self.create_service(SensorRead, 'sensor_read_service', self.sensor_read_callback)
+        # Callback groups: Services can run in parallel so put each in its own callback group.
+        # Use MutuallyExclusiveCallback instead of Reentrant so that we ensure that the earliest call gets the earliest data for publishing.
+        # (We are unlikely to have multiple queued callbacks as our timer publisher runs only every 2ms.)
+        service_callback_group = rclpy.callback_groups.MutuallyExclusiveCallbackGroup()
+
+        self.srv = self.create_service(SensorRead, 'sensor_read_service', self.sensor_read_callback, callback_group=service_callback_group)
         self.sensor = Sensor(**sensor_args) # Define a sensor with 2000Hz sampling rate and 1ms delay
         self.number_of_samples = number_of_samples
-        t1 = Thread(target = self.sensor.run)
-        t1.daemon = True
-        t1.start()
+
+        # Separate thread for sensor querying is required: if not, we will get stuck in the "while True" loop querying for sensor samples.
+        # threading.Thread solves this problem. However, prefer multiprocessing.Process because: due to Python's Global Interpreter Lock, threads without Multiprocessing run serially. multiprocessing allows the use of multiple cores and truly parallel threads that run on different cores.
+        sensor_thread = Process(target = self.query_for_samples)
+        sensor_thread.daemon = True
+        sensor_thread.start()
 
         self.data_reservoir = deque(maxlen=buffer_size) # Data reservoir is a reservoir of the last 200 samples.
 
@@ -36,10 +46,6 @@ class SensorService(Node):
         print('connecting to {} port {}'.format(*server_address))
         self.sock.connect(server_address)
         print('connected')
-
-        t2 = Thread(target=self.query_for_samples)
-        t2.daemon = True
-        t2.start()
 
     def sensor_read_callback(self, request, response):
         # Request num_samples samples from the sensor
@@ -56,7 +62,7 @@ class SensorService(Node):
             try:
                 datapoint.data = self.data_reservoir.pop()
             except IndexError:
-                    continue
+                break
             zero_data = False
             Sensor_Samples.append(datapoint)
         response.readings = Sensor_Samples
