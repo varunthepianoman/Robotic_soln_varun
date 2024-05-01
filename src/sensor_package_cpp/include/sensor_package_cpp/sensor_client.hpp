@@ -23,7 +23,7 @@ public:
             // Clients 1 and 2 can be called in parallel, so place them in different Callback Groups as well.
             // Favoring MutuallyExclusive over Reentrant as it is safer: We then won't have two queries accessing same server data_reservoir.
             rclcpp::CallbackGroup::SharedPtr callback_group = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
-            rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor_client = this->create_client<custom_interfaces::srv::SensorRead>("sensor1_read_service", rmw_qos_profile_system_default, callback_group);
+            this->sensor_client = this->create_client<custom_interfaces::srv::SensorRead>("sensor1_read_service", rmw_qos_profile_system_default, callback_group);
         }
 
     auto send_request()
