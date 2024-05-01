@@ -26,32 +26,34 @@ class SensorService(Node):
                  sensor_id: int,
                  number_of_samples: int):
         super().__init__('sensor_service_' + str(sensor_id))
+        self.data_reservoir = deque(maxlen=buffer_size) # Data reservoir is a deque reservoir of the last buffer_size samples.
+
+        self.sensor = Sensor(address, port, sampling_rate, _delay, sensor_id) # Define a sensor with sampling rate and delay defined in constructor args
+
+        # Create a TCP/IP socket
+        self.client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        # Connect the socket to the port where the server is listening
+        server_address = (address, port)
+        print('sensor service ' + str(sensor_id) + ' connecting to {} port {}'.format(*server_address))
+        self.client_sock.connect(server_address)
+        print('connected')
+
+        # Separate thread for sensor querying is required: if not, we will get stuck in the "while True" loop querying for sensor samples.
+        # threading.Thread solves this problem.
+        query_thread = Thread(target = self.query_for_samples)
+        query_thread.daemon = True
+        query_thread.start()
+
         # Callback groups: Services can run in parallel so put each in its own callback group.
         # Use MutuallyExclusiveCallback instead of Reentrant so that we ensure that the earliest call gets the earliest data for publishing.
         # (We are unlikely to have multiple queued callbacks as our timer publisher runs only every 2ms.)
         service_callback_group = rclpy.callback_groups.MutuallyExclusiveCallbackGroup()
 
         self.srv = self.create_service(SensorRead, 'sensor_read_service', self.sensor_read_callback, callback_group=service_callback_group)
-        self.sensor = Sensor(address, port, sampling_rate, _delay, id) # Define a sensor with sampling rate and delay defined in constructor args
         self.sensor_id = sensor_id
         self.number_of_samples = number_of_samples
 
-        # Separate thread for sensor querying is required: if not, we will get stuck in the "while True" loop querying for sensor samples.
-        # threading.Thread solves this problem.
-        sensor_thread = Thread(target = self.query_for_samples)
-        sensor_thread.daemon = True
-        sensor_thread.start()
-
-        self.data_reservoir = deque(maxlen=buffer_size) # Data reservoir is a deque reservoir of the last buffer_size samples.
-
-        # Create a TCP/IP socket
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-        # Connect the socket to the port where the server is listening
-        server_address = (address, port)
-        print('connecting to {} port {}'.format(*server_address))
-        self.sock.connect(server_address)
-        print('connected')
 
     def sensor_read_callback(self, request, response):
         # Request num_samples samples from the sensor
@@ -75,17 +77,19 @@ class SensorService(Node):
         return response
 
     def query_for_samples(self):
-        while True:
-            message_string = str(self.number_of_samples)
-            message = message_string.encode()
-            self.sock.sendall(message)
+        try:
+            while True:
+                message_string = str(self.number_of_samples)
+                message = message_string.encode()
+                self.client_sock.sendall(message)
 
-            byte_data = self.sock.recv(10000)
-            sensor_data = np.frombuffer(byte_data)
-            sensor_data = sensor_data.reshape(self.number_of_samples, self.sensor.DOF)
-            for datapoint in sensor_data:
-                self.data_reservoir.append(datapoint) # List appending takes about same time as editing preallocated numpy array: Append to list for simplicity
-
+                byte_data = self.client_sock.recv(10000)
+                sensor_data = np.frombuffer(byte_data)
+                sensor_data = sensor_data.reshape(self.number_of_samples, self.sensor.DOF)
+                for datapoint in sensor_data:
+                    self.data_reservoir.append(datapoint) # List appending takes about same time as editing preallocated numpy array: Append to list for simplicity
+        finally:
+            self.client_sock.close()
 
 
 def main():

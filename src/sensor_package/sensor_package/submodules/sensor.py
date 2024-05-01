@@ -29,7 +29,7 @@ class Sensor(Thread):
         
         # Bind the server arg to the socket
         self.sock.bind(self.server_address)
-        print(self.server_address)
+        print('socket listening at ', self.server_address)
         # Listen for incoming connections
         self.sock.listen(1)
 
