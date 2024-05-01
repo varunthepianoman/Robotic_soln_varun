@@ -20,7 +20,7 @@ class Sensor(Thread):
         port: int,
         sampling_rate: int,
         _delay: float,
-        id: int) -> None:
+        _id: int) -> None:
         
         # Create a TCP/IP socket
         self.server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -34,7 +34,7 @@ class Sensor(Thread):
         # Listen for incoming connections
         self.server_sock.listen(1)
 
-        print('sensor ' + str(id) + ' listnening at ' + self.server_address)
+        print('sensor ' + str(_id) + ' listnening at ' + self.server_address)
 
         # This is an artificial delay we add as the over head
         self.overhead_delay = _delay 
