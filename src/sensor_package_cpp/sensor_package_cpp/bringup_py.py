@@ -3,7 +3,6 @@
 from sensor_package_cpp.submodules.sensor import Sensor
 from sensor_package_cpp.submodules.sensor_service import SensorService
 import rclpy
-import multiprocessing as mp
 
 
 def main():
@@ -27,7 +26,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # Set Multiprocessing's start method to spawn: Safer than fork. Used to run sensor query threads in parallel.
-    mp.set_start_method('spawn')
-
     main()

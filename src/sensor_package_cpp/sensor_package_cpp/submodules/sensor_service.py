@@ -10,8 +10,7 @@ from sensor_package_cpp.submodules.sensor import Sensor
 import socket
 import sys
 import time
-# from threading import Thread, Timer
-from multiprocessing import Process
+from threading import Thread, Timer
 
 
 buffer_size = 32 # How many sensor samples to store in our buffer: We need 2 maximum for sensor1 and 8 maximum for sensor2. Store 32 for safety.
@@ -36,8 +35,9 @@ class SensorService(Node):
         self.number_of_samples = number_of_samples
 
         # Separate thread for sensor querying is required: if not, we will get stuck in the "while True" loop querying for sensor samples.
-        # threading.Thread solves this problem. However, prefer multiprocessing.Process because: due to Python's Global Interpreter Lock, threads without Multiprocessing run serially. Multiprocessing allows the use of multiple cores and concurrently-running parallel threads.
-        sensor_thread = Process(target = self.query_for_samples, daemon=True)
+        # threading.Thread solves this problem.
+        sensor_thread = Thread(target = self.query_for_samples)
+        sensor_thread.daemon = True
         sensor_thread.start()
 
         self.data_reservoir = deque(maxlen=buffer_size) # Data reservoir is a deque reservoir of the last buffer_size samples.
