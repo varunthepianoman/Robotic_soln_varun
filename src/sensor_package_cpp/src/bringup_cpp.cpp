@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     executor.spin();
 
     // Shutdown
-    rclpy::shutdown();
+    rclcpp::shutdown();
 
     return 0;
 
