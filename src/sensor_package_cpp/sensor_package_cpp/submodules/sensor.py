@@ -34,6 +34,8 @@ class Sensor(Thread):
         # Listen for incoming connections
         self.server_sock.listen(1)
 
+        print('_id', _id)
+
         print('sensor ' + str(_id) + ' listnening at ' + self.server_address)
 
         # This is an artificial delay we add as the over head
