@@ -34,7 +34,7 @@ class SensorService(Node):
         # Connect the socket to the port where the server is listening
         server_address = (address, port)
         print('sensor service ' + str(sensor_id) + ' connecting to {} port {}'.format(*server_address))
-        self.sock.connect(server_address)
+        self.client_sock.connect(server_address)
         print('connected')
 
         # Callback groups: Services can run in parallel so put each in its own callback group.
@@ -81,7 +81,7 @@ class SensorService(Node):
                 message = message_string.encode()
                 self.client_sock.sendall(message)
 
-                byte_data = self.sock.recv(10000)
+                byte_data = self.client_sock.recv(10000)
                 sensor_data = np.frombuffer(byte_data)
                 sensor_data = sensor_data.reshape(self.number_of_samples, self.sensor.DOF)
                 for datapoint in sensor_data:

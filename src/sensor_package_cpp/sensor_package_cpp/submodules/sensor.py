@@ -52,7 +52,7 @@ class Sensor(Thread):
         # Wait for a connection
             print('waiting for a connection')
             while (self.client_address is None):
-                self.client_connection, self.client_address = self.sock.accept()
+                self.client_connection, self.client_address = self.server_sock.accept()
             self.connected = True
             print('connection from', self.client_address)
             return True
