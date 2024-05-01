@@ -10,7 +10,7 @@ from sensor_package_cpp.submodules.sensor import Sensor
 import socket
 import sys
 import time
-from threading import Thread, Timer
+# from threading import Thread, Timer
 from multiprocessing import Process
 
 
