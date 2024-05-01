@@ -23,17 +23,17 @@ class Sensor(Thread):
         id: int) -> None:
         
         # Create a TCP/IP socket
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
         # Define the server address and port
         self.server_address = (address, port)
         
         # Bind the server arg to the socket
-        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.sock.bind(self.server_address)
+        self.server_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.server_sock.bind(self.server_address)
         print(self.server_address)
         # Listen for incoming connections
-        self.sock.listen(1)
+        self.server_sock.listen(1)
 
         # This is an artificial delay we add as the over head
         self.overhead_delay = _delay 
@@ -52,14 +52,14 @@ class Sensor(Thread):
         # Wait for a connection
             print('waiting for a connection')
             while (self.client_address is None):
-                self.connection, self.client_address = self.sock.accept()
+                self.client_connection, self.client_address = self.sock.accept()
             self.connected = True
             print('connection from', self.client_address)
             return True
 
     def recive(self, buffer_size: int)->int:
         # Read a buffer size from the socket 
-        recived_msg = self.connection.recv(buffer_size)
+        recived_msg = self.client_connection.recv(buffer_size)
         msg = recived_msg.decode()
         if msg.isnumeric():
             return int(msg)
@@ -78,7 +78,7 @@ class Sensor(Thread):
         # Send the data to the client
         if self.connected:
             try:
-                self.connection.sendall(data.tobytes())
+                self.client_connection.sendall(data.tobytes())
                 return True
             except:
                 print("Something went wrong in sending samples to: ", self.client_address)
@@ -91,7 +91,7 @@ class Sensor(Thread):
                         # Recive the request for the number of samples
                         sample_length = self.recive(500)
 
-
+                        print('Received sample_length ', sample_length)
                         # Let's pretend we are really collecting samples
                         time.sleep(int(sample_length)/self.sampling_rate + self.overhead_delay + random.randint(0, 100)/100000)
                         
@@ -100,7 +100,8 @@ class Sensor(Thread):
 
                 finally:
                     # Clean up the connection
-                    self.connection.close()
+                    self.client_connection.close()
+                    self.server_sock.close() # Added: Close socket server as well
                     
 
 def main(args=None):

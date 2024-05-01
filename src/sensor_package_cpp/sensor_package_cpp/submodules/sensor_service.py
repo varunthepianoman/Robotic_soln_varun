@@ -29,7 +29,7 @@ class SensorService(Node):
         self.data_reservoir = deque(maxlen=buffer_size) # Data reservoir is a deque reservoir of the last buffer_size samples.
 
         # Create a TCP/IP socket
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # Connect the socket to the port where the server is listening
         server_address = (address, port)
@@ -75,17 +75,19 @@ class SensorService(Node):
         return response
 
     def query_for_samples(self):
-        while True:
-            message_string = str(self.number_of_samples)
-            message = message_string.encode()
-            self.sock.sendall(message)
+        try:
+            while True:
+                message_string = str(self.number_of_samples)
+                message = message_string.encode()
+                self.client_sock.sendall(message)
 
-            byte_data = self.sock.recv(10000)
-            sensor_data = np.frombuffer(byte_data)
-            sensor_data = sensor_data.reshape(self.number_of_samples, self.sensor.DOF)
-            for datapoint in sensor_data:
-                self.data_reservoir.append(datapoint) # List appending takes about same time as editing preallocated numpy array: Append to list for simplicity
-
+                byte_data = self.sock.recv(10000)
+                sensor_data = np.frombuffer(byte_data)
+                sensor_data = sensor_data.reshape(self.number_of_samples, self.sensor.DOF)
+                for datapoint in sensor_data:
+                    self.data_reservoir.append(datapoint) # List appending takes about same time as editing preallocated numpy array: Append to list for simplicity
+        finally:
+            self.client_sock.close()
 
 
 def main():
