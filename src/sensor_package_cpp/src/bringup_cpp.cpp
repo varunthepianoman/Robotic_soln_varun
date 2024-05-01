@@ -32,6 +32,9 @@ int main(int argc, char** argv) {
     // Start our executor
     executor.spin();
 
+    // Shutdown
+    rclpy::shutdown();
+
     return 0;
 
 }

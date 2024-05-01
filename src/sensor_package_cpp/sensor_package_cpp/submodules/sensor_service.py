@@ -12,18 +12,16 @@ import sys
 import time
 from threading import Thread, Timer
 
-# requesting 10 samples on each call
-number_of_samples = 10
-
-buffer_size = 2000000 # How many sensor samples to store in our buffer: 200 samples should be more than enough space for our purposes.
+buffer_size = 32 # How many sensor samples to store in our buffer: We need 2 maximum for sensor1 and 8 maximum for sensor2. Store 32 for safety.
 
 
 class SensorService(Node):
 
-    def __init__(self):
+    def __init__(self, sensor_args, number_of_samples):
         super().__init__('sensor_service')
         self.srv = self.create_service(SensorRead, 'sensor_read_service', self.sensor_read_callback)
-        self.sensor = Sensor('127.0.0.1', 65432, 2000, 0.001) # Define a sensor with 2000Hz sampling rate and 1ms delay
+        self.sensor = Sensor(**sensor_args) # Define a sensor with 2000Hz sampling rate and 1ms delay
+        self.number_of_samples = number_of_samples
         t1 = Thread(target = self.sensor.run)
         t1.daemon = True
         t1.start()
@@ -69,13 +67,13 @@ class SensorService(Node):
     def query_for_samples(self):
         sensor_dof = self.sensor.DOF # For fast access
         while True:
-            message_string = str(number_of_samples)
+            message_string = str(self.number_of_samples)
             message = message_string.encode()
             self.sock.sendall(message)
 
             byte_data = self.sock.recv(10000)
             sensor_data = np.frombuffer(byte_data)
-            sensor_data = sensor_data.reshape(number_of_samples, sensor_dof)
+            sensor_data = sensor_data.reshape(self.number_of_samples, sensor_dof)
             for datapoint in sensor_data:
                 self.data_reservoir.append(datapoint) # List appending takes about same time as editing preallocated numpy array: Append to list for simplicity
 

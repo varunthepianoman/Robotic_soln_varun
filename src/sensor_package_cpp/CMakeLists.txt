@@ -28,9 +28,10 @@ ament_target_dependencies(bringup_executable rclcpp custom_interfaces std_msgs)
 ament_python_install_package(${PROJECT_NAME})
 # Install Python executables
 install(PROGRAMS
-  sensor_package_cpp/sensor_service.py
+  sensor_package_cpp/submodules/sensor_service.py
   sensor_package_cpp/sensor_client.py
   sensor_package_cpp/submodules/sensor.py
+  sensor_package_cpp/bringup_py.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
