@@ -31,9 +31,10 @@ class Sensor(Thread):
         # Bind the server arg to the socket
         self.server_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.server_sock.bind(self.server_address)
-        print(self.server_address)
         # Listen for incoming connections
         self.server_sock.listen(1)
+
+        print('sensor ' + str(id) + ' listnening at ' + self.server_address)
 
         # This is an artificial delay we add as the over head
         self.overhead_delay = _delay 
@@ -46,15 +47,19 @@ class Sensor(Thread):
         self.DOF = 6
         self.sampling_rate = sampling_rate
         self.id = id
+
+        sensor_thread = Thread(target = self.run)
+        sensor_thread.daemon = True
+        sensor_thread.start()
         
 
     def connect(self) -> bool:
         # Wait for a connection
-            print('waiting for a connection')
+            print('sensor ' + str(self.id) + ' waiting for a connection')
             while (self.client_address is None):
                 self.client_connection, self.client_address = self.server_sock.accept()
             self.connected = True
-            print('connection from', self.client_address)
+            print('sensor ' + str(self.id) + ': connection from', self.client_address)
             return True
 
     def recive(self, buffer_size: int)->int:
