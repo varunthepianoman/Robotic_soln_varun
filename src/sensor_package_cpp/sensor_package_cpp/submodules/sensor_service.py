@@ -78,7 +78,6 @@ class SensorService(Node):
         while True:
             message_string = str(self.number_of_samples)
             message = message_string.encode()
-            breakpoint()
             self.sock.sendall(message)
 
             byte_data = self.sock.recv(10000)
