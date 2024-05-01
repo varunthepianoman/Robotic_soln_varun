@@ -28,7 +28,7 @@ class SensorService(Node):
         super().__init__('sensor_service_' + str(sensor_id))
         self.data_reservoir = deque(maxlen=buffer_size) # Data reservoir is a deque reservoir of the last buffer_size samples.
 
-        self.sensor = Sensor(address, port, sampling_rate, _delay, id) # Define a sensor with sampling rate and delay defined in constructor args
+        self.sensor = Sensor(address, port, sampling_rate, _delay, sensor_id) # Define a sensor with sampling rate and delay defined in constructor args
 
         # Create a TCP/IP socket
         self.client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
