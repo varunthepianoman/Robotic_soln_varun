@@ -16,6 +16,8 @@ class SensorReadPublisher : public rclcpp::Node
 private:
     void timer_callback()
     {
+        RCLCPP_INFO(this->get_logger(), "Timer Publisher: Entered timer callback");
+
         // Query both Clients for sensor data
         // type i thought before: rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse*
         auto result_sensor_1 = this->sensor1_client->send_request();
