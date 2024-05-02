@@ -9,18 +9,18 @@ Varun Kamat, please reach me at: varunkamat23@gmail.com for any questions.
 Please note that all code is in src/sensor_package_cpp and src/custom_interfaces folder.
 
 ### ROS2 Nodes
-Launch Node for Python Scripts:................src/sensor_package_cpp/sensor_package_cpp/bringup_py.py
-Sensor:........................................src/sensor_package_cpp/sensor_package_cpp/submodules/sensor.py
-Service for Sensor:............................src/sensor_package_cpp/sensor_package_cpp/submodules/sensor_service.py
-Launch Node for C++ Scripts:...................src/sensor_package_cpp/src/bringup_cpp.cpp
-Sensor Client:.................................src/sensor_package_cpp/include/sensor_package_cpp/sensor_client.hpp
-Sensor Publisher:..............................src/sensor_package_cpp/include/sensor_package_cpp/sensor_read_publisher.hpp
-Sensor Subscriber:.............................src/sensor_package_cpp/include/sensor_package_cpp/sensor_subscriber.hpp
+Launch Node for Python Scripts: src/sensor_package_cpp/sensor_package_cpp/bringup_py.py
+Sensor: src/sensor_package_cpp/sensor_package_cpp/submodules/sensor.py
+Service for Sensor: src/sensor_package_cpp/sensor_package_cpp/submodules/sensor_service.py
+Launch Node for C++ Scripts src/sensor_package_cpp/src/bringup_cpp.cpp
+Sensor Client: src/sensor_package_cpp/include/sensor_package_cpp/sensor_client.hpp
+Sensor Publisher: src/sensor_package_cpp/include/sensor_package_cpp/sensor_read_publisher.hpp
+Sensor Subscriber: src/sensor_package_cpp/include/sensor_package_cpp/sensor_subscriber.hpp
 
 ### Custom Interface
-Single Sensor Single Sample Message:...........src/custom_interfaces/msg/SensorSample.msg
-Single Sensor Many Samples Service:............src/custom_interfaces/srv/SensorRead.srv
-Both Sensor SamplesMessage to Publish:.........src/custom_interfaces/msg/SensorReadCombined.msg
+Single Sensor Single Sample Message: src/custom_interfaces/msg/SensorSample.msg
+Single Sensor Many Samples Service: src/custom_interfaces/srv/SensorRead.srv
+Both Sensor SamplesMessage to Publish: src/custom_interfaces/msg/SensorReadCombined.msg
 
 ### Note
 There may be other files here, including the all-python prototype package sensor_package, but the above files are the relevant ones for the final solution.
