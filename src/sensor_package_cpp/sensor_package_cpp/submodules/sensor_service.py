@@ -68,7 +68,7 @@ class SensorService(Node):
         print('request from python', request)
         self.get_logger().info('request', request)
 
-        self.get_logger().info('request.num_samples', request.num_samples)
+        self.get_logger().info('request.num_samples', str(request.num_samples))
         self.get_logger().info('len(data)', len(self.data_reservoir))
         Sensor_Samples = []
         zero_data = True # A variable that tracks special case when we have no data
