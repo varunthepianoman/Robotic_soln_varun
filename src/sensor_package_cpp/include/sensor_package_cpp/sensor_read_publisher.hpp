@@ -34,6 +34,7 @@ private:
         message.num_datapoints1 = result_sensor_1->num_datapoints;
         message.num_datapoints2 = result_sensor_2->num_datapoints;
 
+        // Publish
         publisher_->publish(message);
     }
     std::shared_ptr<SensorClient> sensor1_client;

@@ -37,6 +37,7 @@ public:
     {
         RCLCPP_INFO(this->get_logger(), "Client: Send Request");
 
+        // Make request
         rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedRequest request;
         request = std::make_shared<custom_interfaces::srv::SensorRead::Request>();
         request->num_samples = this->num_samples;
@@ -52,7 +53,7 @@ public:
         RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + " Connected to service").c_str());
 
 
-        // rclcpp::Client<custom_interfaces::srv::SensorRead>::FutureAndRequestId
+        // Send request. Type of result_future: rclcpp::Client<custom_interfaces::srv::SensorRead>::FutureAndRequestId
         auto result_future = sensor_client->async_send_request(request);
 
         RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + ": Sent Request for " + std::to_string(this->num_samples) + " samples").c_str());

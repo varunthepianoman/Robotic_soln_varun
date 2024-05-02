@@ -13,7 +13,7 @@ import time
 from threading import Thread, Timer
 
 
-buffer_size = 100 # How many sensor samples to store in our buffer: We need 2 maximum for sensor1 and 8 maximum for sensor2. Store 32 for safety.
+buffer_size = 100 # How many sensor samples to store in our buffer: Store 100 for safety.
 
 
 class SensorService(Node):
@@ -63,19 +63,15 @@ class SensorService(Node):
         Sensor_Samples = []
         num_datapoints = 0 # A variable that tracks how many valid datapoints we have
         for i in range(request.num_samples):
-            print('in loop, num_datapoints ', num_datapoints)
             datapoint = SensorSample()
             # Try to pop() from self.data_reservoir: IndexError means no more data in buffer and we construct our SampleSet and return.
             try:
                 datapoint.data = self.data_reservoir.pop()
             except IndexError:
-                print('except')
                 break
             num_datapoints += 1
             Sensor_Samples.append(datapoint)
-        print('response.readings', response.readings)
         response.readings = Sensor_Samples
-        print('response.readings', response.readings)
         response.num_datapoints = num_datapoints
         return response
 

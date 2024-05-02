@@ -10,6 +10,7 @@ from rclpy.impl import rcutils_logger
 def main():
     rclpy.init()
 
+    # Start SensorServices
     address_1 = '127.0.0.1'
     address_2 = '127.0.0.1'
     port_1 = 65432
