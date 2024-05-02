@@ -13,7 +13,7 @@ import time
 from threading import Thread, Timer
 
 
-buffer_size = 32 # How many sensor samples to store in our buffer: We need 2 maximum for sensor1 and 8 maximum for sensor2. Store 32 for safety.
+buffer_size = 100 # How many sensor samples to store in our buffer: We need 2 maximum for sensor1 and 8 maximum for sensor2. Store 32 for safety.
 
 
 class SensorService(Node):

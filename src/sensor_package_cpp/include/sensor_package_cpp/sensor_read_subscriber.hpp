@@ -8,6 +8,7 @@
 
 #include <iostream>
 using std::placeholders::_1;
+#define MAX_NUM_DATAPOINTS 100
 
 class SensorReadSubscriber : public rclcpp::Node
 {
@@ -32,14 +33,14 @@ private:
 
         // I wanted to use smart pointers for this, but objects are already created, I don't want to std::move them to invalidate old references, and I don't want to waste time copying for std::make_shared.
         // So I use dumb pointer, as object pointed to is const and there is no chance of dangling pointer.
-        const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>* sensor1_data = &msg.readings_sensor1;
-        const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>* sensor2_data = &msg.readings_sensor2;
+        const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, MAX_NUM_DATAPOINTS>* sensor1_data = &msg.readings_sensor1;
+        const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, MAX_NUM_DATAPOINTS>* sensor2_data = &msg.readings_sensor2;
         int sensor1_num_datapoints = msg.num_datapoints1;
         int sensor2_num_datapoints = msg.num_datapoints2;
         RCLCPP_INFO(this->get_logger(), ("Sensor 1 Data (" + std::to_string(sensor1_num_datapoints) + " datapoints):").c_str());
-        print_sensor_sample<100>(sensor1_data, sensor1_num_datapoints);
+        print_sensor_sample<MAX_NUM_DATAPOINTS>(sensor1_data, sensor1_num_datapoints);
         RCLCPP_INFO(this->get_logger(), ("Sensor 2 Data (" + std::to_string(sensor2_num_datapoints) + " datapoints):").c_str());
-        print_sensor_sample<100>(sensor2_data, sensor2_num_datapoints);
+        print_sensor_sample<MAX_NUM_DATAPOINTS>(sensor2_data, sensor2_num_datapoints);
     }
 
     template<int N> // N = Maximum length of samples.
