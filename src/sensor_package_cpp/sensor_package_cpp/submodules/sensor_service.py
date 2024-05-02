@@ -26,6 +26,9 @@ class SensorService(Node):
                  sensor_id: int,
                  number_of_samples: int):
         super().__init__('sensor_service_' + str(sensor_id))
+        self.sensor_id = sensor_id
+        self.number_of_samples = number_of_samples
+
         self.data_reservoir = deque(maxlen=buffer_size) # Data reservoir is a deque reservoir of the last buffer_size samples.
 
         self.sensor = Sensor(address, port, sampling_rate, _delay, sensor_id) # Define a sensor with sampling rate and delay defined in constructor args
@@ -51,8 +54,6 @@ class SensorService(Node):
         service_callback_group = rclpy.callback_groups.MutuallyExclusiveCallbackGroup()
 
         self.srv = self.create_service(SensorRead, 'sensor_read_service', self.sensor_read_callback, callback_group=service_callback_group)
-        self.sensor_id = sensor_id
-        self.number_of_samples = number_of_samples
 
 
     def sensor_read_callback(self, request, response):
