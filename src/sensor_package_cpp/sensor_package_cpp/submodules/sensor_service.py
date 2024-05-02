@@ -67,15 +67,18 @@ class SensorService(Node):
         print('print from python')
         # print('request from python', request)
 
-        self.get_logger().info('len(data)', len(self.data_reservoir))
+        # self.get_logger().info('len(data)', len(self.data_reservoir))
+        print('len(self.data_reservoir)', len(self.data_reservoir))
         Sensor_Samples = []
         zero_data = True # A variable that tracks special case when we have no data
         for i in range(request.num_samples):
+            print('in loop')
             datapoint = SensorSample()
             # Try to pop() from self.data_reservoir: IndexError means no more data in buffer and we construct our SampleSet and return.
             try:
                 datapoint.data = self.data_reservoir.pop()
             except IndexError:
+                print('except')
                 break
             zero_data = False
             Sensor_Samples.append(datapoint)
