@@ -51,7 +51,7 @@ public:
         // rclcpp::Client<custom_interfaces::srv::SensorRead>::FutureAndRequestId
         auto result_future = sensor_client->async_send_request(request);
 
-        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + ": Sent Request for " std::to_str(this->num_samples) " samples").c_str());
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + ": Sent Request for " + std::to_str(this->num_samples) + " samples").c_str());
 
         // Must wait for result as we have allowed Publisher and Client to run concurrently (in order to avoid deadlock). Timeout to guarantee a graceful finish
         std::future_status status = result_future.wait_for(1s);
