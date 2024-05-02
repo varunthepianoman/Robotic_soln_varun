@@ -83,9 +83,8 @@ class SensorService(Node):
             zero_data = False
             Sensor_Samples.append(datapoint)
         response.readings = Sensor_Samples
+        print('response.readings', response.readings)
         response.zero_data = zero_data
-        self.get_logger().info('before accessing response in logger')
-        self.get_logger().info('response after generating', response.readings)
         return response
 
     def query_for_samples(self):
