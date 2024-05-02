@@ -38,9 +38,9 @@ class SensorService(Node):
 
         # Connect the socket to the port where the server is listening
         server_address = (address, port)
-        print('sensor service ' + str(sensor_id) + ' connecting to {} port {}'.format(*server_address))
+        self.get_logger().info('sensor service ' + str(sensor_id) + ' connecting to {} port {}'.format(*server_address))
         self.client_sock.connect(server_address)
-        print('connected')
+        self.get_logger().info('connected')
 
         # Separate thread for sensor querying is required: if not, we will get stuck in the "while True" loop querying for sensor samples.
         # threading.Thread solves this problem.
@@ -60,9 +60,9 @@ class SensorService(Node):
 
     def sensor_read_callback(self, request, response):
         # Request num_samples samples from the sensor
-        print('entered sensor callback')
-        print('request.num_samples', request.num_samples)
-        print('len(data)', len(self.data_reservoir))
+        self.get_logger().info('entered sensor service ' + self.sensor_id + ' callback')
+        self.get_logger().info('request.num_samples', request.num_samples)
+        self.get_logger().info('len(data)', len(self.data_reservoir))
         Sensor_Samples = []
         zero_data = True # A variable that tracks special case when we have no data
         for i in range(request.num_samples):
@@ -76,7 +76,7 @@ class SensorService(Node):
             Sensor_Samples.append(datapoint)
         response.readings = Sensor_Samples
         response.zero_data = zero_data
-        print('response after generating', response.readings)
+        self.get_logger().info('response after generating', response.readings)
         return response
 
     def query_for_samples(self):

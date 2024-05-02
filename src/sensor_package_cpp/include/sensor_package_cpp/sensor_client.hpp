@@ -26,7 +26,8 @@ public:
             // The clients are called within the publisher, so they must be in different Callback Groups than Publisher to avoid deadlock.
             // Clients 1 and 2 can be called in parallel, so place them in different Callback Groups as well.
             // Favoring MutuallyExclusive over Reentrant as it is safer: We then won't have two queries accessing same server data_reservoir.
-            rclcpp::CallbackGroup::SharedPtr callback_group = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+            // Favoring Reentrant: To avoid deadlock
+            rclcpp::CallbackGroup::SharedPtr callback_group = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
             std::string client_name = std::string("sensor") + std::to_string(sensor_id) + "_read_service";
             this->sensor_client = this->create_client<custom_interfaces::srv::SensorRead>(client_name, rmw_qos_profile_system_default, callback_group);
         }
@@ -54,7 +55,7 @@ public:
         RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + ": Sent Request for " + std::to_string(this->num_samples) + " samples").c_str());
 
         // Must wait for result before Publisher takes our message, as we have allowed Publisher and Client to run concurrently in order to avoid deadlock. Timeout to guarantee a graceful finish
-        std::future_status status = result_future.wait_for(60s);
+        std::future_status status = result_future.wait_for(10s);
 
         RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + ": After future wait_for").c_str());
 
