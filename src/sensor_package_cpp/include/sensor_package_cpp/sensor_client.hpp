@@ -79,7 +79,7 @@ public:
         // Curiously, the SharedResponse object seems to have overloaded the address-of (&) operator. I tried to return a pointer to the SharedResponse object and extract readings in the Publisher, but it gave me and allocator instead of an address.
         // So, I just extract the readings here and return a pointer to them.
         // Type I thought before: custom_interfaces::msg::SensorSample[]
-        const auto readings_output = result_future.get()->readings;
+        const auto readings_output = result_future;
 
 //        std::cout << "readings" <<  readings_output
 
@@ -91,7 +91,7 @@ public:
         RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + ": about to return").c_str());
 
         // NOTE: Remember to handle zero-data case!
-        return readings_output;
+        return result_future.get();
 //        // Handled by my callback groups! Wait for the result.
 //        if (rclcpp::spin_until_future_complete(node, result) ==
 //            rclcpp::FutureReturnCode::SUCCESS) {
