@@ -44,16 +44,18 @@ class SensorService(Node):
 
         # Separate thread for sensor querying is required: if not, we will get stuck in the "while True" loop querying for sensor samples.
         # threading.Thread solves this problem.
+        self.get_logger().info('before query')
         query_thread = Thread(target = self.query_for_samples)
         query_thread.daemon = True
         query_thread.start()
+        self.get_logger().info('after query')
 
         # Callback groups: Services can run in parallel so put each in its own callback group.
-        # Use MutuallyExclusiveCallback instead of Reentrant so that we ensure that the earliest call gets the earliest data for publishing.
-        # (We are unlikely to have multiple queued callbacks as our timer publisher runs only every 2ms.)
+        # Use ReentrantCallbackGroup instead of MutuallyExclusive so that the continous query_for_samples doesn't block this init and the service callback.
         service_callback_group = rclpy.callback_groups.ReentrantCallbackGroup()
 
         self.srv = self.create_service(SensorRead, 'sensor' + str(sensor_id) + '_read_service', self.sensor_read_callback, callback_group=service_callback_group)
+        self.get_logger().info('end init')
 
 
     def sensor_read_callback(self, request, response):

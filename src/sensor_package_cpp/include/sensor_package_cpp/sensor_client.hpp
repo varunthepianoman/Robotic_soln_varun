@@ -43,6 +43,8 @@ public:
             }
             RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
         }
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Connected to service");
+
 
         // rclcpp::Client<custom_interfaces::srv::SensorRead>::FutureAndRequestId
         auto result_future = sensor_client->async_send_request(request);
