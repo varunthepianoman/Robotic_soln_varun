@@ -45,6 +45,7 @@ private:
     rclcpp::Publisher<custom_interfaces::msg::SensorReadCombined>::SharedPtr publisher_;
     int sensor1_num_samples;
     int sensor2_num_samples;
+    rclcpp::CallbackGroup::SharedPtr callback_group;
     rclcpp::TimerBase::SharedPtr timer_;
 public:
     SensorReadPublisher(std::shared_ptr<SensorClient> sensor1_client,
@@ -58,8 +59,8 @@ public:
             , sensor1_num_samples {sensor1_num_samples}
             , sensor2_num_samples {sensor2_num_samples}
     {
-//        rclcpp::CallbackGroup::SharedPtr callback_group = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
-        this->timer_ = this->create_wall_timer(2ms, std::bind(&SensorReadPublisher::timer_callback, this));//, callback_group);
+        this->callback_group = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
+        this->timer_ = this->create_wall_timer(2ms, std::bind(&SensorReadPublisher::timer_callback, this), this->callback_group);
 
     }
 
