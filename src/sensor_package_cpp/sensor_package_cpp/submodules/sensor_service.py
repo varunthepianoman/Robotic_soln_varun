@@ -65,7 +65,7 @@ class SensorService(Node):
         self.get_logger().info('entered sensor service ' + str(self.sensor_id) + ' callback')
         self.get_logger().info('just a print statement from logger')
         print('print from python')
-        print('request from python', request)
+        # print('request from python', request)
 
         self.get_logger().info('len(data)', len(self.data_reservoir))
         Sensor_Samples = []
@@ -81,6 +81,7 @@ class SensorService(Node):
             Sensor_Samples.append(datapoint)
         response.readings = Sensor_Samples
         response.zero_data = zero_data
+        self.get_logger().info('before accessing response in logger')
         self.get_logger().info('response after generating', response.readings)
         return response
 
