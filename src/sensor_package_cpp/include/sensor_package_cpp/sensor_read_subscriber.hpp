@@ -29,19 +29,23 @@ private:
     void topic_callback(const custom_interfaces::msg::SensorReadCombined & msg) const
     {
         RCLCPP_INFO(this->get_logger(), "Heard");
-        std::shared_ptr<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 2>> sensor1_data = std::make_shared<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 2>>(msg.readings_sensor1);
-        std::shared_ptr<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>> sensor2_data = std::make_shared<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>>(msg.readings_sensor2);
+        std::shared_ptr<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>> sensor1_data = msg.readings_sensor1;
+        std::shared_ptr<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>> sensor2_data = msg.readings_sensor2;
+        std::shared_ptr<int> sensor1_num_datapoints = msg.num_datapoints1
+        std::shared_ptr<int> sensor2_num_datapoints = msg.num_datapoints2
         RCLCPP_INFO(this->get_logger(), "Sensor 1 Data:\n");
-        print_sensor_sample<2>(sensor1_data);
+        print_sensor_sample<8>(sensor1_data, *sensor1_num_datapoints);
         RCLCPP_INFO(this->get_logger(), "Sensor 2 Data:\n");
-        print_sensor_sample<8>(sensor2_data);
+        print_sensor_sample<8>(sensor2_data, *sensor2_num_datapoints);
     }
 
-    template<int N>
-    void print_sensor_sample(std::shared_ptr<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, N>> sensor_data) const
+    template<int N> // N = Maximum length of samples.
+    void print_sensor_sample(std::shared_ptr<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, N>> sensor_data,
+                             int num_datapoints) const
     {
         int i = 0;
         for (custom_interfaces::msg::SensorSample sample : *sensor_data) {
+            assert(i <= num_datapoints)
             std::string sample_line = "Sample " + std::to_string(i) + ": ";
             RCLCPP_INFO(this->get_logger(), sample_line.c_str());
             std::string data_line = "[";

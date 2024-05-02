@@ -70,7 +70,7 @@ class SensorService(Node):
         # self.get_logger().info('len(data)', len(self.data_reservoir))
         print('len(self.data_reservoir)', len(self.data_reservoir))
         Sensor_Samples = []
-        zero_data = True # A variable that tracks special case when we have no data
+        num_datapoints = 0 # A variable that tracks how many valid datapoints we have
         for i in range(request.num_samples):
             print('in loop')
             datapoint = SensorSample()
@@ -80,11 +80,11 @@ class SensorService(Node):
             except IndexError:
                 print('except')
                 break
-            zero_data = False
+            num_datapoints += 1
             Sensor_Samples.append(datapoint)
         response.readings = Sensor_Samples
         print('response.readings', response.readings)
-        response.zero_data = zero_data
+        response.num_datapoints = num_datapoints
         return response
 
     def query_for_samples(self):
