@@ -43,7 +43,7 @@ private:
     }
 
     template<int N> // N = Maximum length of samples.
-    void print_sensor_sample(rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, N>* sensor_data,
+    void print_sensor_sample(const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, N>* sensor_data,
                              int num_datapoints) const
     {
         int i = 0;
