@@ -52,7 +52,7 @@ class SensorService(Node):
 
         # Callback groups: Services can run in parallel so put each in its own callback group.
         # Use ReentrantCallbackGroup instead of MutuallyExclusive so that the continous query_for_samples doesn't block this init and the service callback.
-        service_callback_group = rclpy.callback_groups.ReentrantCallbackGroup()
+        service_callback_group = rclpy.callback_groups.MutuallyExclusiveCallbackGroup()
 
         self.srv = self.create_service(SensorRead, 'sensor' + str(sensor_id) + '_read_service', self.sensor_read_callback, callback_group=service_callback_group)
         self.get_logger().info('end init')
