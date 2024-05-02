@@ -30,7 +30,7 @@ public:
             // Favoring Reentrant: To avoid deadlock
             this->callback_group = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
             std::string client_name = std::string("sensor") + std::to_string(sensor_id) + "_read_service";
-            RCLCPP_INFO(this->get_logger(), ("Initializing client" + client_name).c_str());
+            RCLCPP_INFO(this->get_logger(), ("Initializing client: " + client_name).c_str());
             this->sensor_client = this->create_client<custom_interfaces::srv::SensorRead>(client_name, rmw_qos_profile_system_default, this->callback_group);
         }
 

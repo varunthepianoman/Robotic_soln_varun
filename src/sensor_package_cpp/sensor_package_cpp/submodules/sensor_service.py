@@ -26,6 +26,7 @@ class SensorService(Node):
                  sensor_id: int,
                  number_of_samples: int):
         super().__init__('sensor_service_' + str(sensor_id))
+        self.get_logger().info('initializing service node: ' + 'sensor_service_' + str(sensor_id))
         self.sensor_id = sensor_id
         self.number_of_samples = number_of_samples
 
@@ -54,6 +55,7 @@ class SensorService(Node):
         # Use ReentrantCallbackGroup instead of MutuallyExclusive so that the continous query_for_samples doesn't block this init and the service callback.
         service_callback_group = rclpy.callback_groups.ReentrantCallbackGroup()
 
+        self.get_logger().info('initializing service: ' + 'sensor' + str(sensor_id) + '_read_service')
         self.srv = self.create_service(SensorRead, 'sensor' + str(sensor_id) + '_read_service', self.sensor_read_callback, callback_group=service_callback_group)
         self.get_logger().info('end init')
 
