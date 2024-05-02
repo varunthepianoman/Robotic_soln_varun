@@ -30,10 +30,10 @@ private:
 
         // Put Sensor 1 and Sensor 2 data into combined message
 
-        message.readings_sensor1 = result_sensor_1->readings;
-        message.readings_sensor2 = result_sensor_2->readings;
-        message.zero_data1 = result_sensor_1->zero_data;
-        message.zero_data2 = result_sensor_2->zero_data;
+        message.readings_sensor1 = result_sensor_1.readings;
+        message.readings_sensor2 = result_sensor_2.readings;
+        message.zero_data1 = result_sensor_1.zero_data;
+        message.zero_data2 = result_sensor_2.zero_data;
 
         // Publish combined message
         RCLCPP_INFO(this->get_logger(), "Timer Publisher: Publishing");
