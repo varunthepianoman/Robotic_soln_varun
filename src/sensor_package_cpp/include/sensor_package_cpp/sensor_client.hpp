@@ -60,15 +60,15 @@ public:
         RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + ": After future wait_for").c_str());
 
 
-        if (status == std::future_status::ready) {
-            RCLCPP_INFO(this->get_logger(), ("Client " + std::to_string(this->sensor_id) + ": Received response").c_str());
-        }
-        if (status == std::future_status::timeout) {
-            RCLCPP_INFO(this->get_logger(), ("Client " + std::to_string(this->sensor_id) + ": timeout").c_str());
-        }
-        if (status == std::future_status::deferred) {
-            RCLCPP_INFO(this->get_logger(), ("Client " + std::to_string(this->sensor_id) + ": deferred").c_str());
-        }
+//        if (status == std::future_status::ready) {
+//            RCLCPP_INFO(this->get_logger(), ("Client " + std::to_string(this->sensor_id) + ": Received response").c_str());
+//        }
+//        if (status == std::future_status::timeout) {
+//            RCLCPP_INFO(this->get_logger(), ("Client " + std::to_string(this->sensor_id) + ": timeout").c_str());
+//        }
+//        if (status == std::future_status::deferred) {
+//            RCLCPP_INFO(this->get_logger(), ("Client " + std::to_string(this->sensor_id) + ": deferred").c_str());
+//        }
         // const rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse
         //auto result_future_shared = result_future//.future.share();
 
@@ -83,6 +83,8 @@ public:
 //
 //        auto readings_sensor1_after_addressing = test_addr->readings;
 //        auto readings_sensor1_after_addressing_and_deref = (*test_addr)->readings;
+
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + ": about to return").c_str());
 
         // NOTE: Remember to handle zero-data case!
         return readings_output;
