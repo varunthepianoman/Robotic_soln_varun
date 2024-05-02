@@ -294,17 +294,3 @@ If I had more time, I would suggest the following improvements to my code:
 - Incorporate Timing Analysis into Decision about How Many Samples `N` to Query
 ## Maintainer / Contact
 Varun Kamat, please reach me at: varunkamat23@gmail.com for any questions. 
-# My Todos
-Push final version to GitHub
-- Test code: Pull it and run according to your instructions in VirtualBox
-- Submit!!!
-- After Submitting, Before Meeting:
-	- Lingering Questions
-		- What is an action server?
-	- Presentation
-
-- Other Notes, may be needed:
-	- Note: Check port numbers: Client address seems to be different port numer...
-	- Other note: Try to connect to 127.0.0.1 until it does? Don't want to have a forever loop tho...
-	- Why can't you assign a callback group to a publisher?
-
