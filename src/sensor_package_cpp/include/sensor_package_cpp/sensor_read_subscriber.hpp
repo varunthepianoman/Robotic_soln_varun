@@ -34,8 +34,8 @@ private:
         // So I use dumb pointer, as object pointed to is const and there is no chance of dangling pointer.
         rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>> *sensor1_data = &msg.readings_sensor1;
         rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>> *sensor2_data = &msg.readings_sensor2;
-        int sensor1_num_datapoints = msg.num_datapoints1
-        int sensor2_num_datapoints = msg.num_datapoints2
+        int sensor1_num_datapoints = msg.num_datapoints1;
+        int sensor2_num_datapoints = msg.num_datapoints2;
         RCLCPP_INFO(this->get_logger(), "Sensor 1 Data:\n");
         print_sensor_sample<8>(*sensor1_data, sensor1_num_datapoints);
         RCLCPP_INFO(this->get_logger(), "Sensor 2 Data:\n");
