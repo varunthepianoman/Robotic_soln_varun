@@ -27,7 +27,8 @@ int main(int argc, char** argv) {
     executor.add_node(publisher);
     executor.add_node(subscriber);
 
-    RCLCPP_INFO(this->get_logger(), "bringup: About to spin");
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "bringup: About to spin");
+
     // Start our executor
     executor.spin();
 
