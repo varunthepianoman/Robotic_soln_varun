@@ -14,6 +14,7 @@ using namespace std::chrono_literals;
 
 class SensorClient: public rclcpp::Node {
 private:
+    rclcpp::CallbackGroup::SharedPtr callback_group;
     rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedPtr sensor_client;
     int sensor_id;
     int num_samples;
@@ -27,9 +28,9 @@ public:
             // Clients 1 and 2 can be called in parallel, so place them in different Callback Groups as well.
             // Favoring MutuallyExclusive over Reentrant as it is safer: We then won't have two queries accessing same server data_reservoir.
             // Favoring Reentrant: To avoid deadlock
-            rclcpp::CallbackGroup::SharedPtr callback_group = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
+            this->callback_group = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
             std::string client_name = std::string("sensor") + std::to_string(sensor_id) + "_read_service";
-            this->sensor_client = this->create_client<custom_interfaces::srv::SensorRead>(client_name, rmw_qos_profile_system_default, callback_group);
+            this->sensor_client = this->create_client<custom_interfaces::srv::SensorRead>(client_name, rmw_qos_profile_system_default, this->callback_group);
         }
 
     auto send_request()
