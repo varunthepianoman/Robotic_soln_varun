@@ -6,9 +6,7 @@
 #define CLIENT2_NUM_SAMPLES 8
 
 int main(int argc, char** argv) {
-    std::cout << "before init";
     rclcpp::init(argc, argv);
-    std::cout << "after init";
 
     // Make a MultiThreadedExecutor to allow threads to run in parallel.
     rclcpp::executors::MultiThreadedExecutor executor;
@@ -29,6 +27,7 @@ int main(int argc, char** argv) {
     executor.add_node(publisher);
     executor.add_node(subscriber);
 
+    RCLCPP_INFO(this->get_logger(), "bringup: About to spin");
     // Start our executor
     executor.spin();
 
