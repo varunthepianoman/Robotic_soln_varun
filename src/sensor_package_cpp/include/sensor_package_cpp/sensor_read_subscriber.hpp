@@ -32,8 +32,8 @@ private:
 
         // I wanted to use smart pointers for this, but objects are already created, I don't want to std::move them to invalidate old references, and I don't want to waste time copying for std::make_shared.
         // So I use dumb pointer, as object pointed to is const and there is no chance of dangling pointer.
-        rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>* sensor1_data = &msg.readings_sensor1;
-        rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>* sensor2_data = &msg.readings_sensor2;
+        const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>* sensor1_data = &msg.readings_sensor1;
+        const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>* sensor2_data = &msg.readings_sensor2;
         int sensor1_num_datapoints = msg.num_datapoints1;
         int sensor2_num_datapoints = msg.num_datapoints2;
         RCLCPP_INFO(this->get_logger(), "Sensor 1 Data:\n");
