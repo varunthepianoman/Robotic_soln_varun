@@ -58,8 +58,8 @@ public:
             , sensor1_num_samples {sensor1_num_samples}
             , sensor2_num_samples {sensor2_num_samples}
     {
-        rclcpp::CallbackGroup::SharedPtr callback_group = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
-        this->timer_ = this->create_wall_timer(2ms, std::bind(&SensorReadPublisher::timer_callback, this), callback_group);
+//        rclcpp::CallbackGroup::SharedPtr callback_group = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
+        this->timer_ = this->create_wall_timer(2ms, std::bind(&SensorReadPublisher::timer_callback, this));//, callback_group);
 
     }
 
