@@ -3,11 +3,14 @@
 from sensor_package_cpp.submodules.sensor import Sensor
 from sensor_package_cpp.submodules.sensor_service import SensorService
 import rclpy
+from rclpy.impl import rcutils_logger
+
 
 
 def main():
     rclpy.init()
 
+    # Start SensorServices
     address_1 = '127.0.0.1'
     address_2 = '127.0.0.1'
     port_1 = 65432
@@ -21,6 +24,9 @@ def main():
     # Add services to our executor.
     executor.add_node(sensor1_service)
     executor.add_node(sensor2_service)
+
+    logger = rcutils_logger.RcutilsLogger(name="my_logger")
+    logger.info("bringup_py: About to spin executor")
 
     # Spin executor
     executor.spin()

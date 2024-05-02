@@ -48,7 +48,7 @@ class Sensor(Thread):
         self.connected = False
         self.DOF = 6
         self.sampling_rate = sampling_rate
-        self.id = id
+        self.id = _id
 
         sensor_thread = Thread(target = self.run)
         sensor_thread.daemon = True
@@ -57,7 +57,7 @@ class Sensor(Thread):
 
     def connect(self) -> bool:
         # Wait for a connection
-            print('sensor ' + str(self._id) + ' waiting for a connection')
+            print('sensor ' + str(self.id) + ' waiting for a connection')
             while (self.client_address is None):
                 self.client_connection, self.client_address = self.server_sock.accept()
             self.connected = True
@@ -98,7 +98,6 @@ class Sensor(Thread):
                         # Recive the request for the number of samples
                         sample_length = self.recive(500)
 
-                        print('Received sample_length ', sample_length)
                         # Let's pretend we are really collecting samples
                         time.sleep(int(sample_length)/self.sampling_rate + self.overhead_delay + random.randint(0, 100)/100000)
                         

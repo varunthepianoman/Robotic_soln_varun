@@ -2,13 +2,11 @@
 #include "sensor_package_cpp/sensor_read_subscriber.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include <iostream>
-#define CLIENT1_NUM_SAMPLES 2
-#define CLIENT2_NUM_SAMPLES 8
+#define CLIENT1_NUM_SAMPLES 8
+#define CLIENT2_NUM_SAMPLES 32
 
 int main(int argc, char** argv) {
-    std::cout << "before init";
     rclcpp::init(argc, argv);
-    std::cout << "after init";
 
     // Make a MultiThreadedExecutor to allow threads to run in parallel.
     rclcpp::executors::MultiThreadedExecutor executor;
@@ -28,6 +26,8 @@ int main(int argc, char** argv) {
     executor.add_node(sensor2_client);
     executor.add_node(publisher);
     executor.add_node(subscriber);
+
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "bringup_cpp: About to spin");
 
     // Start our executor
     executor.spin();

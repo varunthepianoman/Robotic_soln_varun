@@ -13,7 +13,7 @@ import time
 from threading import Thread, Timer
 
 
-buffer_size = 32 # How many sensor samples to store in our buffer: We need 2 maximum for sensor1 and 8 maximum for sensor2. Store 32 for safety.
+buffer_size = 100 # How many sensor samples to store in our buffer: Store 100 for safety.
 
 
 class SensorService(Node):
@@ -26,6 +26,7 @@ class SensorService(Node):
                  sensor_id: int,
                  number_of_samples: int):
         super().__init__('sensor_service_' + str(sensor_id))
+        self.get_logger().info('Initializing service node: ' + 'sensor_service_' + str(sensor_id))
         self.sensor_id = sensor_id
         self.number_of_samples = number_of_samples
 
@@ -38,33 +39,29 @@ class SensorService(Node):
 
         # Connect the socket to the port where the server is listening
         server_address = (address, port)
-        print('sensor service ' + str(sensor_id) + ' connecting to {} port {}'.format(*server_address))
+        self.get_logger().info('sensor service ' + str(sensor_id) + ' connecting to {} port {}'.format(*server_address))
         self.client_sock.connect(server_address)
-        print('connected')
+        self.get_logger().info('connected')
 
         # Separate thread for sensor querying is required: if not, we will get stuck in the "while True" loop querying for sensor samples.
         # threading.Thread solves this problem.
-        self.get_logger().info('before query')
         query_thread = Thread(target = self.query_for_samples)
         query_thread.daemon = True
         query_thread.start()
-        self.get_logger().info('after query')
 
         # Callback groups: Services can run in parallel so put each in its own callback group.
         # Use ReentrantCallbackGroup instead of MutuallyExclusive so that the continous query_for_samples doesn't block this init and the service callback.
         service_callback_group = rclpy.callback_groups.ReentrantCallbackGroup()
 
+        self.get_logger().info('initializing service: ' + 'sensor' + str(sensor_id) + '_read_service')
         self.srv = self.create_service(SensorRead, 'sensor' + str(sensor_id) + '_read_service', self.sensor_read_callback, callback_group=service_callback_group)
-        self.get_logger().info('end init')
 
 
     def sensor_read_callback(self, request, response):
         # Request num_samples samples from the sensor
-        print('entered sensor callback')
-        print('request.num_samples', request.num_samples)
-        print('len(data)', len(self.data_reservoir))
+        self.get_logger().info('entered sensor service ' + str(self.sensor_id) + ' callback')
         Sensor_Samples = []
-        zero_data = True # A variable that tracks special case when we have no data
+        num_datapoints = 0 # A variable that tracks how many valid datapoints we have
         for i in range(request.num_samples):
             datapoint = SensorSample()
             # Try to pop() from self.data_reservoir: IndexError means no more data in buffer and we construct our SampleSet and return.
@@ -72,11 +69,10 @@ class SensorService(Node):
                 datapoint.data = self.data_reservoir.pop()
             except IndexError:
                 break
-            zero_data = False
+            num_datapoints += 1
             Sensor_Samples.append(datapoint)
         response.readings = Sensor_Samples
-        response.zero_data = zero_data
-        print('response after generating', response.readings)
+        response.num_datapoints = num_datapoints
         return response
 
     def query_for_samples(self):
