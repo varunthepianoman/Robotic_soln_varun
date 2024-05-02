@@ -21,7 +21,7 @@ private:
         auto result_sensor_1 = this->sensor1_client->send_request();
         auto result_sensor_2 = this->sensor2_client->send_request();
 
-        RCLCPP_INFO(this->get_logger(), "Timer Publisher: Received responses from clients");
+        RCLCPP_INFO(this->get_logger(), "Timer Publisher: Received responses from clients".c_str());
 
         // Generate combined message
         custom_interfaces::msg::SensorReadCombined message = custom_interfaces::msg::SensorReadCombined();
