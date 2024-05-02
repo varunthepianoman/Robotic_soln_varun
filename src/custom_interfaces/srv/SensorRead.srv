@@ -4,6 +4,6 @@
 int8 num_samples
 ---
 # Response params: Array of 6-DOF readings, of size num_samples.
-SensorSample[<=8] readings
+SensorSample[<=100] readings
 # Identifies special case of zero data for sensor 1 and 2.
 int8 num_datapoints
