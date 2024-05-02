@@ -26,7 +26,7 @@ class SensorService(Node):
                  sensor_id: int,
                  number_of_samples: int):
         super().__init__('sensor_service_' + str(sensor_id))
-        self.get_logger().info('initializing service node: ' + 'sensor_service_' + str(sensor_id))
+        self.get_logger().info('Initializing service node: ' + 'sensor_service_' + str(sensor_id))
         self.sensor_id = sensor_id
         self.number_of_samples = number_of_samples
 
@@ -45,19 +45,16 @@ class SensorService(Node):
 
         # Separate thread for sensor querying is required: if not, we will get stuck in the "while True" loop querying for sensor samples.
         # threading.Thread solves this problem.
-        self.get_logger().info('before query')
         query_thread = Thread(target = self.query_for_samples)
         query_thread.daemon = True
         query_thread.start()
-        self.get_logger().info('after query')
 
         # Callback groups: Services can run in parallel so put each in its own callback group.
         # Use ReentrantCallbackGroup instead of MutuallyExclusive so that the continous query_for_samples doesn't block this init and the service callback.
-        service_callback_group = rclpy.callback_groups.MutuallyExclusiveCallbackGroup()
+        service_callback_group = rclpy.callback_groups.ReentrantCallbackGroup()
 
         self.get_logger().info('initializing service: ' + 'sensor' + str(sensor_id) + '_read_service')
         self.srv = self.create_service(SensorRead, 'sensor' + str(sensor_id) + '_read_service', self.sensor_read_callback, callback_group=service_callback_group)
-        self.get_logger().info('end init')
 
 
     def sensor_read_callback(self, request, response):

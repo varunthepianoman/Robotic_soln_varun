@@ -23,7 +23,7 @@ private:
         auto result_sensor_1 = this->sensor1_client->send_request();
         auto result_sensor_2 = this->sensor2_client->send_request();
 
-        RCLCPP_INFO(this->get_logger(), "Timer Publisher: Received responses from clients");
+        RCLCPP_INFO(this->get_logger(), "Timer Publisher: Received responses from clients. Publishing");
 
         // Generate combined message
         custom_interfaces::msg::SensorReadCombined message = custom_interfaces::msg::SensorReadCombined();
@@ -34,8 +34,6 @@ private:
         message.num_datapoints1 = result_sensor_1->num_datapoints;
         message.num_datapoints2 = result_sensor_2->num_datapoints;
 
-        // Publish combined message
-        RCLCPP_INFO(this->get_logger(), "Timer Publisher: Publishing");
         publisher_->publish(message);
     }
     std::shared_ptr<SensorClient> sensor1_client;
@@ -57,18 +55,8 @@ public:
             , sensor1_num_samples {sensor1_num_samples}
             , sensor2_num_samples {sensor2_num_samples}
     {
+        // Callback group: MutuallyExclusive. Makes no sense to call a next timer sequence if our next one hasn't finished, although ideally this would never happen if our timer callback takes less than 2ms to run.
         this->callback_group = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
         this->timer_ = this->create_wall_timer(2ms, std::bind(&SensorReadPublisher::timer_callback, this), this->callback_group);
-
     }
-
 };
-
-// THIS WILL GO AWAY
-//int main(int argc, char * argv[])
-//{
-//    rclcpp::init(argc, argv);
-//    rclcpp::spin(std::make_shared<MinimalPublisher>());
-//    rclcpp::shutdown();
-//    return 0;
-//}

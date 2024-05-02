@@ -28,7 +28,7 @@ private:
     rclcpp::Subscription<custom_interfaces::msg::SensorReadCombined>::SharedPtr subscription_;
     void topic_callback(const custom_interfaces::msg::SensorReadCombined & msg) const
     {
-        RCLCPP_INFO(this->get_logger(), "Heard");
+        RCLCPP_INFO(this->get_logger(), "Heard:");
 
         // I wanted to use smart pointers for this, but objects are already created, I don't want to std::move them to invalidate old references, and I don't want to waste time copying for std::make_shared.
         // So I use dumb pointer, as object pointed to is const and there is no chance of dangling pointer.
@@ -36,9 +36,9 @@ private:
         const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>* sensor2_data = &msg.readings_sensor2;
         int sensor1_num_datapoints = msg.num_datapoints1;
         int sensor2_num_datapoints = msg.num_datapoints2;
-        RCLCPP_INFO(this->get_logger(), "Sensor 1 Data:\n");
+        RCLCPP_INFO(this->get_logger(), ("Sensor 1 Data (" + std::to_string(sensor1_num_datapoints) + " datapoints):").c_str());
         print_sensor_sample<8>(sensor1_data, sensor1_num_datapoints);
-        RCLCPP_INFO(this->get_logger(), "Sensor 2 Data:\n");
+        RCLCPP_INFO(this->get_logger(), ("Sensor 2 Data (" + std::to_string(sensor2_num_datapoints) + " datapoints):").c_str());
         print_sensor_sample<8>(sensor2_data, sensor2_num_datapoints);
     }
 
@@ -62,11 +62,4 @@ private:
     }
 };
 
-//int main(int argc, char * argv[])
-//{
-//    rclcpp::init(argc, argv);
-//    rclcpp::spin(std::make_shared<MinimalSubscriber>());
-//    rclcpp::shutdown();
-//    return 0;
-//}
 

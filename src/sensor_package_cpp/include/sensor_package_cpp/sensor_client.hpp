@@ -27,7 +27,6 @@ public:
             // The clients are called within the publisher, so they must be in different Callback Groups than Publisher to avoid deadlock.
             // Clients 1 and 2 can be called in parallel, so place them in different Callback Groups as well.
             // Favoring MutuallyExclusive over Reentrant as it is safer: We then won't have two queries accessing same server data_reservoir.
-            // Favoring Reentrant: To avoid deadlock
             this->callback_group = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
             std::string client_name = std::string("sensor") + std::to_string(sensor_id) + "_read_service";
             RCLCPP_INFO(this->get_logger(), ("Initializing client: " + client_name).c_str());
@@ -73,30 +72,7 @@ public:
         if (status == std::future_status::deferred) {
             RCLCPP_INFO(this->get_logger(), ("Client " + std::to_string(this->sensor_id) + ": deferred").c_str());
         }
-        // const rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse
-        //auto result_future_shared = result_future//.future.share();
 
-//        std::cout << "readings" <<  readings_output
-
-//        auto test_addr = &result_future_get;
-//
-//        auto readings_sensor1_after_addressing = test_addr->readings;
-//        auto readings_sensor1_after_addressing_and_deref = (*test_addr)->readings;
-
-        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + ": about to return").c_str());
-
-        // NOTE: Remember to handle zero-data case!
         return result_future.get();
-//        // Handled by my callback groups! Wait for the result.
-//        if (rclcpp::spin_until_future_complete(node, result) ==
-//            rclcpp::FutureReturnCode::SUCCESS) {
-//            RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Data received: [redacted]");
-//        } else {
-//            RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service sensor_read_service");
-//        }
     }
 };
-//    std::cout << "type(result)" << typeid(result).name();
-//	std::cout << "\n\n\n";
-//    rclcpp::shutdown();
-//    return 0;

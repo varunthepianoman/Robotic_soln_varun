@@ -22,6 +22,7 @@ def main():
     executor.add_node(sensor1_service)
     executor.add_node(sensor2_service)
 
+    rclpy.node.Node.get_logger().info("bringup_py: About to spin executor")
     # Spin executor
     executor.spin()
 
