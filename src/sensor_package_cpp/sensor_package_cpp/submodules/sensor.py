@@ -43,7 +43,6 @@ class Sensor(Thread):
 
 
         self.client_address = None
-        self.sampling_rate = 0
         self.sensor_running = False
         self.connected = False
         self.DOF = 6
