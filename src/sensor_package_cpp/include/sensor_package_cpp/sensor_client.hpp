@@ -53,10 +53,12 @@ public:
 
         RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + ": Sent Request for " + std::to_string(this->num_samples) + " samples").c_str());
 
-        // Must wait for result as we have allowed Publisher and Client to run concurrently (in order to avoid deadlock). Timeout to guarantee a graceful finish
+        // Must wait for result before Publisher takes our message, as we have allowed Publisher and Client to run concurrently in order to avoid deadlock. Timeout to guarantee a graceful finish
         std::future_status status = result_future.wait_for(1s);
 
         RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + ": After future wait_for").c_str());
+
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + ": future status " + status).c_str());
 
         if (status == std::future_status::ready) {
             RCLCPP_INFO(this->get_logger(), ("Client " + std::to_string(this->sensor_id) + ": Received response").c_str());
