@@ -2,8 +2,8 @@
 #include "sensor_package_cpp/sensor_read_subscriber.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include <iostream>
-#define CLIENT1_NUM_SAMPLES 2
-#define CLIENT2_NUM_SAMPLES 8
+#define CLIENT1_NUM_SAMPLES 100//2
+#define CLIENT2_NUM_SAMPLES 100//8
 
 int main(int argc, char** argv) {
     rclcpp::init(argc, argv);
