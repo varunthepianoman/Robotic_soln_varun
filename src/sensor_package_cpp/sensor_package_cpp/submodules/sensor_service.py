@@ -53,7 +53,7 @@ class SensorService(Node):
         # (We are unlikely to have multiple queued callbacks as our timer publisher runs only every 2ms.)
         service_callback_group = rclpy.callback_groups.MutuallyExclusiveCallbackGroup()
 
-        self.srv = self.create_service(SensorRead, 'sensor_read_service', self.sensor_read_callback, callback_group=service_callback_group)
+        self.srv = self.create_service(SensorRead, 'sensor' + str(sensor_id) + '_read_service', self.sensor_read_callback, callback_group=service_callback_group)
 
 
     def sensor_read_callback(self, request, response):
