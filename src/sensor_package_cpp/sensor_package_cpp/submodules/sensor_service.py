@@ -65,6 +65,7 @@ class SensorService(Node):
         self.get_logger().info('entered sensor service ' + str(self.sensor_id) + ' callback')
         self.get_logger().info('just a print statement from logger')
         print('print from python')
+        print('request from python', request)
         self.get_logger().info('request', request)
 
         self.get_logger().info('request.num_samples', request.num_samples)
