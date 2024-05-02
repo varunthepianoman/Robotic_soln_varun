@@ -21,6 +21,8 @@ private:
         auto result_sensor_1 = this->sensor1_client->send_request();
         auto result_sensor_2 = this->sensor2_client->send_request();
 
+        RCLCPP_INFO(this->get_logger(), "Timer Publisher: Received responses from clients");
+
         // Generate combined message
         custom_interfaces::msg::SensorReadCombined message = custom_interfaces::msg::SensorReadCombined();
 
@@ -33,7 +35,7 @@ private:
 //        auto r2 = result_sensor_2->readings;
 
         // Publish combined message
-        RCLCPP_INFO(this->get_logger(), "Publishing");
+        RCLCPP_INFO(this->get_logger(), "Timer Publisher: Publishing");
         publisher_->publish(message);
     }
     std::shared_ptr<SensorClient> sensor1_client;

@@ -38,22 +38,26 @@ public:
 
         while (!sensor_client->wait_for_service(1s)) {
             if (!rclcpp::ok()) {
-                RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service.");
+                RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Client " + std::to_str(this->sensor_id) + ": Interrupted while waiting for the service.");
                 rclcpp::shutdown();
             }
-            RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
+            RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Client " + std::to_str(this->sensor_id) + ": service not available, waiting again...");
         }
-        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Connected to service");
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Client " + std::to_str(this->sensor_id) + " Connected to service");
 
 
         // rclcpp::Client<custom_interfaces::srv::SensorRead>::FutureAndRequestId
         auto result_future = sensor_client->async_send_request(request);
 
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Client " + std::to_str(this->sensor_id) + ": Sent Request for " std::to_str(this->num_samples) " samples");
+
         // Must wait for result as we have allowed Publisher and Client to run concurrently (in order to avoid deadlock). Timeout to guarantee a graceful finish
         std::future_status status = result_future.wait_for(1s);
 
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Client " + std::to_str(this->sensor_id) + ": After future wait_for");
+
         if (status == std::future_status::ready) {
-            RCLCPP_INFO(this->get_logger(), "Received response");
+            RCLCPP_INFO(this->get_logger(), "Client " + std::to_str(this->sensor_id) + ": Received response");
         }
 
         // const rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse
