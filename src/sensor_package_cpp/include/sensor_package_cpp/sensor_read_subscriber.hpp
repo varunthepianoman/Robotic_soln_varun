@@ -29,14 +29,17 @@ private:
     void topic_callback(const custom_interfaces::msg::SensorReadCombined & msg) const
     {
         RCLCPP_INFO(this->get_logger(), "Heard");
-        std::shared_ptr<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>> sensor1_data = msg.readings_sensor1;
-        std::shared_ptr<const rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>> sensor2_data = msg.readings_sensor2;
-        std::shared_ptr<int> sensor1_num_datapoints = msg.num_datapoints1
-        std::shared_ptr<int> sensor2_num_datapoints = msg.num_datapoints2
+
+        // I wanted to use smart pointers for this, but objects are already created, I don't want to std::move them to invalidate old references, and I don't want to waste time copying for std::make_shared.
+        // So I use dumb pointer, as object pointed to is const and there is no chance of dangling pointer.
+        rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>>* sensor1_data = &msg.readings_sensor1;
+        rosidl_runtime_cpp::BoundedVector<custom_interfaces::msg::SensorSample, 8>>* sensor2_data = &msg.readings_sensor2;
+        sensor1_num_datapoints = msg.num_datapoints1
+        sensor2_num_datapoints = msg.num_datapoints2
         RCLCPP_INFO(this->get_logger(), "Sensor 1 Data:\n");
-        print_sensor_sample<8>(sensor1_data, *sensor1_num_datapoints);
+        print_sensor_sample<8>(*sensor1_data, sensor1_num_datapoints);
         RCLCPP_INFO(this->get_logger(), "Sensor 2 Data:\n");
-        print_sensor_sample<8>(sensor2_data, *sensor2_num_datapoints);
+        print_sensor_sample<8>(*sensor2_data, sensor2_num_datapoints);
     }
 
     template<int N> // N = Maximum length of samples.

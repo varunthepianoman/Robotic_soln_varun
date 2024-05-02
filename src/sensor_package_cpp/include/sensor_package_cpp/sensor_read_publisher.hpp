@@ -29,11 +29,10 @@ private:
         custom_interfaces::msg::SensorReadCombined message = custom_interfaces::msg::SensorReadCombined();
 
         // Put Sensor 1 and Sensor 2 data into combined message
-
         message.readings_sensor1 = result_sensor_1->readings;
         message.readings_sensor2 = result_sensor_2->readings;
-        message.num_datapoints = result_sensor_1->num_datapoints;
-        message.num_datapoints = result_sensor_2->num_datapoints;
+        message.num_datapoints1 = result_sensor_1->num_datapoints;
+        message.num_datapoints2 = result_sensor_2->num_datapoints;
 
         // Publish combined message
         RCLCPP_INFO(this->get_logger(), "Timer Publisher: Publishing");
