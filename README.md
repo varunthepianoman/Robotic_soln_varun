@@ -27,7 +27,7 @@ source install/setup.bash
 ```
 ros2 run sensor_package_cpp bringup_py.py
 ```
-- In another terminal, Run the C++ Bringup Script:
+- In another terminal, after sourcing the workspace, Run the C++ Bringup Script:
 ```
 ros2 run sensor_package_cpp bringup_executable
 ```
