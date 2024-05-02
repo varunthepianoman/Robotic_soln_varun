@@ -60,27 +60,18 @@ class SensorService(Node):
     def sensor_read_callback(self, request, response):
         # Request num_samples samples from the sensor
         self.get_logger().info('entered sensor service ' + str(self.sensor_id) + ' callback')
-        self.get_logger().info('just a print statement from logger')
-        print('print from python')
-        # print('request from python', request)
-
-        # self.get_logger().info('len(data)', len(self.data_reservoir))
-        print('len(self.data_reservoir)', len(self.data_reservoir))
         Sensor_Samples = []
         num_datapoints = 0 # A variable that tracks how many valid datapoints we have
         for i in range(request.num_samples):
-            print('in loop')
             datapoint = SensorSample()
             # Try to pop() from self.data_reservoir: IndexError means no more data in buffer and we construct our SampleSet and return.
             try:
                 datapoint.data = self.data_reservoir.pop()
             except IndexError:
-                print('except')
                 break
             num_datapoints += 1
             Sensor_Samples.append(datapoint)
         response.readings = Sensor_Samples
-        print('response.readings', response.readings)
         response.num_datapoints = num_datapoints
         return response
 
