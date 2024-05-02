@@ -73,6 +73,7 @@ class SensorService(Node):
                 break
             num_datapoints += 1
             Sensor_Samples.append(datapoint)
+        print('response.readings', response.readings)
         response.readings = Sensor_Samples
         print('response.readings', response.readings)
         response.num_datapoints = num_datapoints
