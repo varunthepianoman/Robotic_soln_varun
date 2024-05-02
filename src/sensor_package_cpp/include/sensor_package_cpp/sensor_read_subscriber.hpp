@@ -38,9 +38,9 @@ private:
         int sensor1_num_datapoints = msg.num_datapoints1;
         int sensor2_num_datapoints = msg.num_datapoints2;
         RCLCPP_INFO(this->get_logger(), ("Sensor 1 Data (" + std::to_string(sensor1_num_datapoints) + " datapoints):").c_str());
-        // print_sensor_sample<MAX_NUM_DATAPOINTS>(sensor1_data, sensor1_num_datapoints);
+        print_sensor_sample<MAX_NUM_DATAPOINTS>(sensor1_data, sensor1_num_datapoints);
         RCLCPP_INFO(this->get_logger(), ("Sensor 2 Data (" + std::to_string(sensor2_num_datapoints) + " datapoints):").c_str());
-        // print_sensor_sample<MAX_NUM_DATAPOINTS>(sensor2_data, sensor2_num_datapoints);
+        print_sensor_sample<MAX_NUM_DATAPOINTS>(sensor2_data, sensor2_num_datapoints);
     }
 
     template<int N> // N = Maximum length of samples.

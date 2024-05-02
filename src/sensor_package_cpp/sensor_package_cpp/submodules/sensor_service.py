@@ -63,18 +63,15 @@ class SensorService(Node):
         Sensor_Samples = []
         num_datapoints = 0 # A variable that tracks how many valid datapoints we have
         for i in range(request.num_samples):
-            print('in loop, num_datapoints ', num_datapoints)
             datapoint = SensorSample()
             # Try to pop() from self.data_reservoir: IndexError means no more data in buffer and we construct our SampleSet and return.
             try:
                 datapoint.data = self.data_reservoir.pop()
             except IndexError:
-                print('except')
                 break
             num_datapoints += 1
             Sensor_Samples.append(datapoint)
         response.readings = Sensor_Samples
-        print('response.readings', response.readings)
         response.num_datapoints = num_datapoints
         return response
 
