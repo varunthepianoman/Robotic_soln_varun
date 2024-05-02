@@ -60,7 +60,7 @@ class SensorService(Node):
 
     def sensor_read_callback(self, request, response):
         # Request num_samples samples from the sensor
-        self.get_logger().info('entered sensor service ' + self.sensor_id + ' callback')
+        self.get_logger().info('entered sensor service ' + str(self.sensor_id) + ' callback')
         self.get_logger().info('request.num_samples', request.num_samples)
         self.get_logger().info('len(data)', len(self.data_reservoir))
         Sensor_Samples = []
