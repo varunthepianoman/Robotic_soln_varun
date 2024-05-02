@@ -282,16 +282,14 @@ bringup_py.py & bringup_cpp.cpp: See Overview of Control Flow.
 - Therefore, original feature branches with all commits are also maintained for full version history and have been pushed.
 # Future Work
 If I had more time, I would suggest the following improvements to my code:
-- I used one executor for CPP and one for Python. Perhaps realistically these would be on different computers, but executors induce significant overhead, so ideally I could avoid it on the same device. Perhaps I can use a Python Launch file, make an executor there, and pass that executor to both my Python and CPP bringup files.
-- Multithread Lock for editing the data reservoir: prevent query thread from modifying at the same time as the service callback.
-- Improve messaging: Maybe we can send addl info with sensor
-- remember to reduce buffer size! Will be pretty small...actually has to be capped at 8 samples for sensor2 and 2 samples for sensor1.i.e. which sensor wrote this, timestamps by period, etc.
+- Timing & Latency Analysis: Check where bottlenecks are and improve.
+- Incorporate Timing Analysis into Decision about How Many Samples `N` to Query
 - shutdown cleanly: I believe I should be able to `Ctrl + C` instead of `Ctrl + \`, so I would like to make sure I am shutting nodes down correctly.
 - Launch file: a single XML/YAML launch file for all nodes.
 - Additional Testing:
 	- Valgrind: Memory checks.
 	- Automate many (100+) runs to catch intermittent bugs.
-- Timing & Latency Analysis: Check where bottlenecks are and improve.
-- Incorporate Timing Analysis into Decision about How Many Samples `N` to Query
+- Multithread Lock for editing the data reservoir: prevent query thread from modifying at the same time as the service callback.
+- I used one executor for CPP and one for Python. Perhaps realistically these would be on different computers, but executors induce significant overhead, so ideally I could avoid it on the same device. Perhaps I can use a Python Launch file, make an executor there, and pass that executor to both my Python and CPP bringup files.
 ## Maintainer / Contact
 Varun Kamat, please reach me at: varunkamat23@gmail.com for any questions. 
