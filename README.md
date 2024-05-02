@@ -1,6 +1,29 @@
-# [In Progress] Robotic_HW Solution
+# [Coding Complete. Full Documentation Expected by 5/2/24 @ 3pm] Robotic_HW Solution
 
-In Progress: ReadMe Documentation & Fully Functional Code forthcoming. Please note that all code is in src/sensor_package_cpp and src/custom_interfaces, NOT src/sensor_package. However, the overall structure of the code is more or less finished if you would like to check in on my progress so far. Please refer to the Temporary_Image_Code_Structure.jpg for a visual overview of the code structure.
+[Coding Complete. Full Documentation Expected by 5/2/24 @ 3pm]: ReadMe Documentation (including explanation and mathematical framework for how to select number of samples to query) Expected by Thursday 5/2/24 @ 3pm. I do have Fully Functional Code here, with extensive inline documentation. 
+
+## Maintainer / Contact
+Varun Kamat, please reach me at: varunkamat23@gmail.com for any questions.
+
+## Relevant Files:
+Please note that all code is in src/sensor_package_cpp and src/custom_interfaces folder.
+
+### ROS2 Nodes
+Launch Node for Python Scripts:................src/sensor_package_cpp/sensor_package_cpp/bringup_py.py
+Sensor:........................................src/sensor_package_cpp/sensor_package_cpp/submodules/sensor.py
+Service for Sensor:............................src/sensor_package_cpp/sensor_package_cpp/submodules/sensor_service.py
+Launch Node for C++ Scripts:...................src/sensor_package_cpp/src/bringup_cpp.cpp
+Sensor Client:.................................src/sensor_package_cpp/include/sensor_package_cpp/sensor_client.hpp
+Sensor Publisher:..............................src/sensor_package_cpp/include/sensor_package_cpp/sensor_read_publisher.hpp
+Sensor Subscriber:.............................src/sensor_package_cpp/include/sensor_package_cpp/sensor_subscriber.hpp
+
+### Custom Interface
+Single Sensor Single Sample Message:...........src/custom_interfaces/msg/SensorSample.msg
+Single Sensor Many Samples Service:............src/custom_interfaces/srv/SensorRead.srv
+Both Sensor SamplesMessage to Publish:.........src/custom_interfaces/msg/SensorReadCombined.msg
+
+### Note
+There may be other files here, including the all-python prototype package sensor_package, but the above files are the relevant ones for the final solution.
 
 ## Context
 The design of our cells in Machina Labs has evolved over the past years. Currently, each of our cells has two articulated industrial robots on rails (a total of 7 axes) and a frame with hydraulic clamps. For the parts to form correctly, we must exert and maintain a dynamic force during the forming in a very accurate location in space. Currently, each robot is equipped with a load cell. See a quick video about our process [here](https://www.youtube.com/watch?v=iqYMprTEXRI). We are using ROS2 to collect the data from the network and control the robots in real-time. As a robotic engineer, we keep developing different modules for our network to add features to the system.  
