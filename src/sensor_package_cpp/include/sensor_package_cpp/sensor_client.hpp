@@ -58,12 +58,16 @@ public:
 
         RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + ": After future wait_for").c_str());
 
-        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), ("Client " + std::to_string(this->sensor_id) + ": future status " + status).c_str());
 
         if (status == std::future_status::ready) {
             RCLCPP_INFO(this->get_logger(), ("Client " + std::to_string(this->sensor_id) + ": Received response").c_str());
         }
-
+        if (status == std::future_status::timeout) {
+            RCLCPP_INFO(this->get_logger(), ("Client " + std::to_string(this->sensor_id) + ": timeout").c_str());
+        }
+        if (status == std::future_status::deferred) {
+            RCLCPP_INFO(this->get_logger(), ("Client " + std::to_string(this->sensor_id) + ": deferred").c_str());
+        }
         // const rclcpp::Client<custom_interfaces::srv::SensorRead>::SharedResponse
         //auto result_future_shared = result_future//.future.share();
 
